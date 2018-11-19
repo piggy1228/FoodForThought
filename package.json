@@ -23,5 +23,14 @@
   "bugs": {
     "url": "https://github.com/piggy1228/FoodForThought/issues"
   },
-  "homepage": "https://github.com/piggy1228/FoodForThought#readme"
+  "homepage": "https://github.com/piggy1228/FoodForThought#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "jade": "^1.11.0",
+    "morgan": "^1.9.1",
+    "mysql": "^2.16.0",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.5.0"
+  }
 }

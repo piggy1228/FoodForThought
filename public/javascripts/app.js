@@ -1,4 +1,4 @@
-var app = angular.module('angularjsNodejsTutorial',[]);
+var app = angular.module('foodForThought',[]);
 app.controller('myController', function($scope, $http) {
     $scope.message="";
     $scope.Submit = function() {
@@ -14,13 +14,10 @@ app.controller('myController', function($scope, $http) {
     }; 
 });
 
-// To implement "Insert a new record", you need to:
-// - Create a new controller here
-// - Create a corresponding route handler in routes/index.js
-app.controller('insertController', function($scope, $http) {
+app.controller('createAccountController', function($scope, $http) {
     $scope.message="";
     $scope.Insert = function() {
-        var request = $http.get('/insert/data/' +
+        var request = $http.get('/create-account/data/' +
             $scope.login + '/' +
             $scope.name + '/' +
             $scope.sex + '/' +
@@ -34,42 +31,4 @@ app.controller('insertController', function($scope, $http) {
         });
 
     };
-});
-
-// (4). Show Friends
-app.controller('friendsController', function($scope, $http) {
-    $scope.message="";
-    $scope.ShowFriends = function() {
-        var request = $http.get('/showfriends/'+$scope.fr_email);
-        request.success(function(data) {
-            $scope.data = data;
-        });
-        request.error(function(data){
-            console.log('err');
-        });
-    
-    }; 
-});
-
-// (5). Show Family
-app.controller('familyController', function($scope, $http) {    
-    var request = $http.get('/init');
-    request.success(function(data) {
-        $scope.logins = data;
-    });
-    request.error(function(data){
-        console.log('err');
-    });
-
-    $scope.message="";
-    $scope.ShowFamily = function() {
-        var request = $http.get('/showfamily/'+$scope.selectedLogin.login);
-        request.success(function(data) {
-            $scope.data = data;
-        });
-        request.error(function(data){
-            console.log('err');
-        });
-    }
-
 });
