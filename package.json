@@ -1,0 +1,27 @@
+{
+  "name": "foodforthought",
+  "version": "1.0.0",
+  "description": "CIS 450 Fall 2018 Project incorporating databases of Yelp and Airbnb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piggy1228/FoodForThought.git"
+  },
+  "keywords": [
+    "Tourism",
+    "Food",
+    "Lodging",
+    "Vacations",
+    "Yelp",
+    "Airbnb"
+  ],
+  "author": "Sam Leavitt, Kexin Zhu, Yichen Weng, Jonathan Ku",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/piggy1228/FoodForThought/issues"
+  },
+  "homepage": "https://github.com/piggy1228/FoodForThought#readme"
+}
