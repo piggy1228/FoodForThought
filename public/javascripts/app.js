@@ -1,7 +1,7 @@
 var app = angular.module('foodForThought',[]);
 app.controller('myController', function($scope, $http) {
     $scope.message="";
-    $scope.Submit = function() {
+    $scope.Search = function() {
         var request = $http.get('/data/'+$scope.email);
         request.success(function(data) {
             $scope.data = data;

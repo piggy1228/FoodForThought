@@ -11,36 +11,58 @@
         <!-- Static navbar-->
         <nav role="navigation" class="navbar navbar-static-top navbar-default">
             <div class="container">
-                <div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">HW2 - CIS550</a></div>
+                <div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">Food For Thought</a></div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <li><a href="/">Home Page</a></li>
                     <li class="active"><a href="/create-account">Create Your Account</a></li>
                 </div>
             </div>
         </nav>
-         <div class="container">
+        <div class="container">
             <!-- Main component for a primary marketing message or call to action-->
             <div class="jumbotron">
-         <div ng-controller="myController">
-        <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter a person login:
-            <input name="email" ng-model="email" value="">
-            <button type="button" ng-click="Submit()" class="button">Show Persons</button>
-        </p>
-        <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
-            <tr> 
-            <td> Login </td>
-            <td> Name </td>
-            <td> Sex </td>
-            <td> RelationshipStatus </td>
-            <td> Birthyear </td>
-            <tr ng-repeat="x in data"> 
-            <td> {{x.login}} </td>
-            <td> {{x.name}} </td>
-            <td> {{x.sex}} </td>
-            <td> {{x.relationshipStatus}} </td>
-            <td> {{x.birthyear}} </td>
-            </tr>
-        </table>
+                <div ng-controller="myController">
+                <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter a city:
+                    <input name="email" ng-model="email" value="">
+                    <button type="button" ng-click="Search()" class="button">Search</button>
+                </p>
+                </div>
+            </div>
+            <div id="googleMap" style="width:100%;height:500px;"></div>
         </div>
+
+        <script>
+        var customLabel = {
+            restaurant: {
+            label: 'R'
+            },
+            lodging: {
+            label: 'L'
+            }
+        };
+
+        function initMap() {
+            var mapProp= {
+                center:new google.maps.LatLng(40.758896, -73.985130),
+                zoom:12,
+            };
+            var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+            map.addListener('center_changed', function() {
+                console.log(marker.getPosition());
+            });
+
+            map.addListener('click', function() {
+                console.log('clicked!');
+            });
+        }
+
+        function addMarkers() {
+
+        }
+
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNoYAxxuRzl4SWiI5Rb9i9i-uQq3F0moo&callback=initMap"></script>
+
     </body>
 </html>

@@ -1,19 +1,61 @@
-var express = require('express');
-var path = require('path');
+const express = require('express');
+const path = require('path');
+const oracledb = require('oracledb');
+const router = express.Router();
 
-var router = express.Router();
+/*
+Databases:
+(result of query 'SELECT table_name FROM user_tables')
+[ { name: 'TABLE_NAME' } ]
+[ [ 'YELP_TOTAL_DB' ],
+  [ 'ARIBNBTOTALTABLE' ],
+  [ 'AIRBNB_ADDRESS' ],
+  [ 'AIRBNB' ],
+  [ 'AIRBNB_HOST' ],
+  [ 'AIRBNB_ROOMREVIEW' ],
+  [ 'AIRBNB_ROOMTYPE' ],
+  [ 'YELP_ADDRESS' ],
+  [ 'YELP_DATA' ] ]
+*/
 
-// Connect string to MySQL
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'fling.seas.upenn.edu',
-  user     : 'leavitts',
-  password : '***********************',
-  database : 'leavitts'
-});
+
+// Connect string to Oracle DB
+
+/*
+var connection = oracledb.getConnection(
+  {
+  user     : 'foodforthought',
+  password : 'foodforthought',
+  connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+  },
+  connExecute
+);
+
+function connExecute(err, connection) {
+  if (err) {
+    console.error(err.message);
+    return;
+  }
+  connection.execute(
+    'SELECT * FROM YELP_DATA',
+    function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        console.log(result.metaData);
+        console.log(result.rows);  // print all returned rows
+      }
+    });
+}
+*/
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+});
+
+router.get('/:lat/:lon/:zoom', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
@@ -21,7 +63,7 @@ router.get('/create-account', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
 });
 
-// ----Your implemention of route handler for "Insert a new record" should go here-----
+/*
 router.get('/create-account/data/:login/:name/:sex/:RelationshipStatus/:Birthyear', function(req,res) {
   var query = 'INSERT INTO Person VALUES ("' +
     req.params.login + '", "' +
@@ -36,5 +78,6 @@ router.get('/create-account/data/:login/:name/:sex/:RelationshipStatus/:Birthyea
     }  
     });
 });
+*/
 
 module.exports = router;
