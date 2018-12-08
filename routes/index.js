@@ -16,12 +16,28 @@ Databases:
   [ 'AIRBNB_ROOMTYPE' ],
   [ 'YELP_ADDRESS' ],
   [ 'YELP_DATA' ] ]
+
+  AIRBNB SCHEMA:
+  [ { name: 'ID' },
+  { name: 'NAME' },
+  { name: 'LISTING_URL' },
+  { name: 'NEIGHBOURHOOD' },
+  { name: 'ZIPCODE' },
+  { name: 'PRICE' },
+  { name: 'WEEKLY_PRICE' },
+  { name: 'PROPERTY_TYPE' },
+  { name: 'ROOM_TYPE' },
+  { name: 'MONTHLY_PRICE' },
+  { name: 'ACCOMMODATES' },
+  { name: 'NUMBER_OF_REVIEWS' },
+  { name: 'REVIEW_SCORES_RATING' },
+  { name: 'REVIEW_SCORES_LOCATION' } ]
 */
 
 
 // Connect string to Oracle DB
 
-/*
+
 var connection = oracledb.getConnection(
   {
   user     : 'foodforthought',
@@ -37,7 +53,7 @@ function connExecute(err, connection) {
     return;
   }
   connection.execute(
-    'SELECT * FROM YELP_DATA',
+    'SELECT DISTINCT ROOM_TYPE FROM AIRBNB',
     function(err, result) {
       if (err) {
         console.error(err.message); return;
@@ -47,7 +63,7 @@ function connExecute(err, connection) {
       }
     });
 }
-*/
+
 
 
 /* GET home page. */
