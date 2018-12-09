@@ -193,7 +193,7 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
   }
 });
 
-/*
+
 router.get('/create-account', function (req, res, next) {
   console.log(res.message);
   res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
@@ -223,7 +223,5 @@ router.post('/create-account', function (req, res, next) {
 
 
 app.listen(3000);
-
-*/
 
 module.exports = router;
