@@ -136,41 +136,6 @@
                 console.log('clicked!');
             });
         }
-
-        // This code is from http://jqueryui.com/slider/#range)
-        $(function() {
-            $("#slider-lodging-price").slider({
-            range: true,
-            min: 0,
-            max: 1000,
-            values: [100, 300],
-            slide: function(event, ui) {
-                var suffix = (ui.values[1] == 1000) ? "+" : "";
-                $("#lp").val( "$" + ui.values[0] + " - $" + ui.values[1] + suffix);
-                $("#lpmin").val($("#slider-lodging-price").slider("values", 0))
-                $("#lpmax").val($("#slider-lodging-price").slider("values", 1))
-            }
-            });
-            $("#lp").val("$" + $("#slider-lodging-price").slider("values", 0) +
-            " - $" + $("#slider-lodging-price").slider("values", 1));
-        });
-        $(function() {
-            $("#slider-restaurant-price").slider({
-            range: true,
-            min: 0,
-            max: 50,
-            values: [10, 25],
-            slide: function(event, ui) {
-                var suffix = (ui.values[1] == 50) ? "+" : "";
-                $("#rp").val( "$" + ui.values[0] + " - $" + ui.values[1] + suffix);
-                $("#rpmin").val($("#slider-lodging-price").slider("values", 0))
-                $("#rpmax").val($("#slider-lodging-price").slider("values", 1))
-            }
-            });
-            $("#rp").val("$" + $("#slider-restaurant-price").slider("values", 0) +
-            " - $" + $("#slider-restaurant-price").slider("values", 1));
-        });
-
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNoYAxxuRzl4SWiI5Rb9i9i-uQq3F0moo&callback=initMap"></script>
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>

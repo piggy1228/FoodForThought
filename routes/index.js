@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-//const oracledb = require('oracledb');
+const oracledb = require('oracledb');
 const router = express.Router();
 var app = express();
 
@@ -92,8 +92,6 @@ function connExecute(err, connection) {
     });
 }
 */
-
-router.use(require('cookie-parser')());
 
 router.use('/create-account', function (req, res, next) {
   console.log("REQUEST TYPE IS " + req.method);
@@ -201,6 +199,7 @@ router.get('/', function(req, res, next) {
 //   }
 // });
 
+
 router.get('/create-account', function (req, res, next) {
   console.log(res.message);
   res.render('insert');
@@ -228,21 +227,5 @@ router.post('/create-account', function (req, res, next) {
   res.render('index');
 });
 
-/*
-router.get('/create-account/data/:login/:name/:sex/:RelationshipStatus/:Birthyear', function(req,res) {
-  var query = 'INSERT INTO Person VALUES ("' +
-    req.params.login + '", "' +
-    req.params.name + '", "' +
-    req.params.sex + '", "' +
-    req.params.RelationshipStatus + '", ' +
-    req.params.Birthyear + ');'
-  connection.query(query, function(err, rows, fields) {
-    if (err) console.log(err);
-    else {
-        console.log('Record Inserted');
-    }  
-    });
-});
-*/
 
 module.exports = router;
