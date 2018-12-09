@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
-const oracledb = require('oracledb');
+//const oracledb = require('oracledb');
 const router = express.Router();
+var cookieParser = require('cookie-parser');
+var app = express();
 
 /*
 Databases:
@@ -90,9 +92,51 @@ function connExecute(err, connection) {
 }
 */
 
+app.use(cookieParser());
+
+router.use(require('cookie-parser')());
+
+router.use('/create-account', function (req, res, next) {
+  console.log("REQUEST TYPE IS " + req.method);
+  if (req.method == 'POST') {
+
+    var username = req.body.username;
+    var email = req.body.email;
+    var password = req.body.pass;
+    var repeatPass = req.body.repeatpass;
+    var isValid = 1;
+
+    if (password !== repeatPass) {
+      isValid = 0;
+    }
+
+    if (password === "") {
+      isValid = 0;
+    }
+
+    if (username === "") {
+      isValid = 0;
+    }
+
+    if (isValid) {
+      req.body.success = 1;
+      next();
+    } else {
+      req.body.success = 0;
+      res.cookie('USER', email);
+      res.redirect('create-account');
+    }
+
+  } else {
+
+    req.body.success = 0;
+    next();
+  }
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  console.log(req.cookies);
   res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
@@ -137,25 +181,42 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
       console.error(err.message);
       return;
     }
-    connection.execute(
-      query,
-      function(err, result) {
-        if (err) {
-          console.error(err.message); return;
-        } else {
-          console.log(result.metaData);
-          console.log(result.rows);  // print all returned rows
-        }
-      });
+    connection.execute(query, function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        console.log(result.metaData);
+        console.log(result.rows);  // print all returned rows
+      }
+    });
   }
-
-
-
-
 });
 
-router.get('/create-account', function(req, res, next) {
+router.get('/create-account', function (req, res, next) {
+  console.log(res.message);
   res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+});
+
+router.post('/create-account', function (req, res, next) {
+
+  console.log(req.body.username);
+  console.log(req.body.email);
+  console.log(req.body.pass);
+  console.log(req.body.success);
+
+  var username = req.body.username;
+  var email = req.body.email;
+  var password = req.body.pass;
+  
+  if (req.body.success) {
+    // DO DATABASE THINGS
+
+    console.log("DO DATABASE THINGS");
+  } else {
+    console.log("DONT DO DATABASE THINGS");
+  }
+
+  res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
 /*
@@ -175,4 +236,5 @@ router.get('/create-account/data/:login/:name/:sex/:RelationshipStatus/:Birthyea
 });
 */
 
+app.listen(3000);
 module.exports = router;
