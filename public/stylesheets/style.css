@@ -1,8 +1,58 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.fft {
+	font-family: "Lucida Console", Monaco, monospace;
 }
 
-a {
-  color: #00B7FF;
+.hdr-btn {
+	margin-right: 20px;
+}
+
+.hdr-el {
+	color: #001f3f;
+}
+
+.signup-form {
+	padding: 30px;
+    float: left;
+    width: 30%;
+    background-color: #8BF7F9;
+    border-radius: 2%;
+    transition: all .5s ease-in-out;
+    border: 1px solid;
+    font-weight: bold;
+    color: black;
+    opacity: 0.8;
+}
+
+.signup-form:hover {
+  background-image: url("food.jpg");
+}
+.signup-padding {
+	padding: 30px;
+    float: left;
+    width: 30%;
+}
+
+.container-form {
+	width: 100%;
+	float: left;
+	margin-top: 200px;
+}
+
+.signup-img {
+	background: url("bnb-background.jpg");
+	background-size: 120%;
+}
+
+.signup-img:before {
+	background: rgba(0,0,0,0.7);
+}
+
+.form-group {
+	font-family: "Lucida Console", Monaco, monospace;
+	color: #FFF;
+	opacity: 1.0;
+}
+
+.container {
+	text-align: center;
 }

@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const oracledb = require('oracledb');
+//const oracledb = require('oracledb');
 const router = express.Router();
 
 /*
@@ -63,6 +63,37 @@ router.get('/create-account', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
 });
 
+router.post('/create-account', function(req, res, next) {
+
+  console.log(req.body.username);
+  console.log(req.body.email);
+  console.log(req.body.pass);
+
+  var username = req.body.username;
+  var email = req.body.email;
+  var password = req.body.pass;
+  var repeatPass = req.body.repeatpass;
+  /* Send this into the DB to create a user */
+
+  var isValid = 1;
+
+  if (password !== repeatPass) {
+    isValid = 0;
+  }
+
+  if (username === "") {
+    isValid = 0;
+  }
+
+  if (isValid) {
+    res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+  } else {
+  
+    res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  }
+
+  
+});
 /*
 router.get('/create-account/data/:login/:name/:sex/:RelationshipStatus/:Birthyear', function(req,res) {
   var query = 'INSERT INTO Person VALUES ("' +

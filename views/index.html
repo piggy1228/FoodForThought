@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html ng-app="foodForThought">
     <head>
-        <title>Please enter a person login</title>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
-        <script src="javascripts/app.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     </head>
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
         <!-- Static navbar-->
-        <nav role="navigation" class="navbar navbar-static-top navbar-default">
-            <div class="container">
-                <div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">Food For Thought</a></div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <li><a href="/">Home Page</a></li>
-                    <li class="active"><a href="/create-account">Create Your Account</a></li>
-                </div>
-            </div>
+        <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-light fft" style="background-color: #e3f2fd;">
+          <a class="navbar-brand" href="/">Food For Thought</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item hdr-btn">
+                <a class="nav-link hdr-el" href="/login">About<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item hdr-btn">
+                <a class="nav-link hdr-el" href="#">Find an Airbnb</a>
+              </li>
+              <li class="nav-item hdr-btn">
+                <a class="nav-link hdr-el" href="#">Search Restaurants</a>
+              </li>
+            <li class="nav-item hdr-btn">
+                <a class="nav-link hdr-el" href="/create-account">Sign Up</a>
+              </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" method="POST">
+              <input id="email-input" class="form-control mr-sm-2" type="form-text text-muted" placeholder="Username" aria-label="Search">
+              <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+            </form>
+          </div>
         </nav>
         <div class="container">
             <!-- Main component for a primary marketing message or call to action-->
@@ -63,6 +84,9 @@
 
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNoYAxxuRzl4SWiI5Rb9i9i-uQq3F0moo&callback=initMap"></script>
-
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script>
     </body>
 </html>
