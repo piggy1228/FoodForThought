@@ -35,9 +35,14 @@
 .container-form {
 	width: 100%;
 	float: left;
-	margin-top: 200px;
+	height: 30%;
+	padding-top: 50px;
 }
 
+.page {
+	height: 100%;
+	width: 100%;
+}
 .signup-img {
 	background: url("bnb-background.jpg");
 	background-size: 120%;
@@ -55,4 +60,9 @@
 
 .container {
 	text-align: center;
+}
+
+.btn {
+	font-family : inherit;
+	font-weight: inherit;
 }
