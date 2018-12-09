@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const oracledb = require('oracledb');
+//const oracledb = require('oracledb');
 const router = express.Router();
 var app = express();
 
@@ -92,6 +92,7 @@ function connExecute(err, connection) {
     });
 }
 */
+router.use(require('cookie-parser')());
 
 router.use('/create-account', function (req, res, next) {
   console.log("REQUEST TYPE IS " + req.method);
@@ -117,88 +118,86 @@ router.use('/create-account', function (req, res, next) {
 
     if (isValid) {
       req.body.success = 1;
-
-
-      var newUser = new models.user({
-        username: username,
-        email: email,
-        password: password
-      });
-      
-      newUser.save(function(error) {
-        res.cookie('USER', email);
-      });
-
       next();
     } else {
       req.body.success = 0;
-      res.redirect('create-account');
+      next();
     }
   } else {
-
     req.body.success = 0;
     next();
   }
 });
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log(req.cookies);
-  res.render('index');
+router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, next) {
+  switch(req.params.roomtype) {
+    case 'private-room':
+      var rt = 'Private room'
+      break;
+    case 'shared-room':
+      var rt = 'Shared room'
+      break;
+    case 'entire-home':
+      var rt = 'Entire home/apt'
+      break;
+  }
+  
+  var query = "SELECT * FROM AIRBNB \
+               JOIN AIRBNB_ADDRESS ON AIRBNB.ID = AIRBNB_ADDRESS.ID \
+               WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) +
+               " AND ROOM_TYPE = '" + rt + "' ";
+  lodgingtypes = req.params.lodgingtypes.split('-');
+  for (var i = 0; i < lodgingtypes.length; i++) {
+    lt = (lodgingtypes[i]).charAt(0).toUpperCase() + (lodgingtypes[i]).slice(1);
+    conj = (i==0) ? "AND (" : "OR";
+    query += (conj + " PROPERTY_TYPE = '" + lt + "' ")
+  }
+  query += ")"
+  console.log(query);
+
+
+  var connection = oracledb.getConnection(
+    {
+    user     : 'foodforthought',
+    password : 'foodforthought',
+    connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+    },
+    connExecute
+  );
+
+  function connExecute(err, connection) {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    connection.execute(query, function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        console.log(result.metaData);
+        console.log(result.rows);  // print all returned rows
+      }
+    });
+  }
 });
 
-// router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, next) {
-//   switch(req.params.roomtype) {
-//     case 'private-room':
-//       var rt = 'Private room'
-//       break;
-//     case 'shared-room':
-//       var rt = 'Shared room'
-//       break;
-//     case 'entire-home':
-//       var rt = 'Entire home/apt'
-//       break;
-//   }
-  
-//   var query = "SELECT * FROM AIRBNB \
-//                JOIN AIRBNB_ADDRESS ON AIRBNB.ID = AIRBNB_ADDRESS.ID \
-//                WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) +
-//                " AND ROOM_TYPE = '" + rt + "' ";
-//   lodgingtypes = req.params.lodgingtypes.split('-');
-//   for (var i = 0; i < lodgingtypes.length; i++) {
-//     lt = (lodgingtypes[i]).charAt(0).toUpperCase() + (lodgingtypes[i]).slice(1);
-//     conj = (i==0) ? "AND (" : "OR";
-//     query += (conj + " PROPERTY_TYPE = '" + lt + "' ")
-//   }
-//   query += ")"
-//   console.log(query);
+/* GET home page. */
+router.get('/', function(req, res, next) {
 
+  console.log(req.cookies);
 
-//   var connection = oracledb.getConnection(
-//     {
-//     user     : 'foodforthought',
-//     password : 'foodforthought',
-//     connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
-//     },
-//     connExecute
-//   );
+  var usercookie = req.cookies.user;
 
-//   function connExecute(err, connection) {
-//     if (err) {
-//       console.error(err.message);
-//       return;
-//     }
-//     connection.execute(query, function(err, result) {
-//       if (err) {
-//         console.error(err.message); return;
-//       } else {
-//         console.log(result.metaData);
-//         console.log(result.rows);  // print all returned rows
-//       }
-//     });
-//   }
-// });
-
+  if (!usercookie) {
+    res.render('index', {
+      'user': 'guest user!'
+    });
+  } else {
+    res.render('index', {
+      'user': usercookie
+    });
+  }
+});
 
 router.get('/create-account', function (req, res, next) {
   console.log(res.message);
@@ -219,12 +218,29 @@ router.post('/create-account', function (req, res, next) {
   if (req.body.success) {
     // DO DATABASE THINGS
 
+    res.cookie('user', username);
+    res.cookie('email', email);
+    var newUser = new models.user({
+      username: username,
+      email: email,
+      password: password
+    });
+    
+    newUser.save(function(error) {
+
+    });
+
     console.log("DO DATABASE THINGS");
+    res.render('index', { 'user': username});
+
   } else {
     console.log("DONT DO DATABASE THINGS");
+    if (req.cookies.user) {
+      res.render('index', { 'user': req.cookies.user});
+    } else {
+      res.render('index', { 'user': 'guest user!'});
+    } 
   }
-
-  res.render('index');
 });
 
 

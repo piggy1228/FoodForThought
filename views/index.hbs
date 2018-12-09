@@ -15,37 +15,8 @@
     </head>
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
-        <!-- Static navbar-->
-        <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-light fft" style="background-color: #e3f2fd;">
-          <a class="navbar-brand" href="/">Food For Thought</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item hdr-btn">
-                <a class="nav-link hdr-el" href="/login">About<span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item hdr-btn">
-                <a class="nav-link hdr-el" href="#">Find an Airbnb</a>
-              </li>
-              <li class="nav-item hdr-btn">
-                <a class="nav-link hdr-el" href="#">Search Restaurants</a>
-              </li>
-            <li class="nav-item hdr-btn">
-                <a class="nav-link hdr-el" href="/create-account">Sign Up</a>
-              </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0" method="POST">
-              <input id="email-input" class="form-control mr-sm-2" type="form-text text-muted" placeholder="Username" aria-label="Search">
-              <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-            </form>
-          </div>
-        </nav>
         <div class="container">
-        <h4> Hi NAME (based on login info -- only display this line if logged in!), </h4>
+        <h4> Hi {{user}}</h4>
         <h3> Tell us a bit about your perfect vacation...</h3>
 
             <div class="jumbotron" style="padding-bottom:15px; padding-top:15px; padding-left:30px; padding-right:30px;">
