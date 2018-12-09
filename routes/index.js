@@ -32,12 +32,37 @@ Databases:
   { name: 'NUMBER_OF_REVIEWS' },
   { name: 'REVIEW_SCORES_RATING' },
   { name: 'REVIEW_SCORES_LOCATION' } ]
+
+  YELP_DATA SCHEMA:
+  [ { name: 'CAMIS' },
+  { name: 'ID' },
+  { name: 'NAME' },
+  { name: 'URL' },
+  { name: 'PHONE' },
+  { name: 'LATITUDE' },
+  { name: 'LONGITUDE' },
+  { name: 'REVIEW_COUNT' },
+  { name: 'PRICE' },
+  { name: 'RATING' },
+  { name: 'TRANSACTIONS' },
+  { name: 'CATEGORIES' },
+  { name: 'ADDRESS' },
+  { name: 'CITY' },
+  { name: 'STATE' },
+  { name: 'ZIP_CODE' } ]
+
+  AIRBNB_ADDRESS SCHEMA:
+  [ { name: 'ID' },
+  { name: 'NEIGHBOURHOOD' },
+  { name: 'ZIPCODE' },
+  { name: 'LATITUDE' },
+  { name: 'LONGITUDE' } ]
 */
 
 
 // Connect string to Oracle DB
 
-
+/*
 var connection = oracledb.getConnection(
   {
   user     : 'foodforthought',
@@ -53,7 +78,7 @@ function connExecute(err, connection) {
     return;
   }
   connection.execute(
-    'SELECT DISTINCT ROOM_TYPE FROM AIRBNB',
+    'SELECT DISTINCT CATEGORIES FROM YELP_DATA',
     function(err, result) {
       if (err) {
         console.error(err.message); return;
@@ -63,7 +88,7 @@ function connExecute(err, connection) {
       }
     });
 }
-
+*/
 
 
 /* GET home page. */
@@ -71,8 +96,16 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
-router.get('/:lat/:lon/:zoom', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, next) {
+  var query = 'SELECT * FROM AIRBNB \
+               WHERE ACCOMODATES >= ' + parseInt(req.params.numtravelers) +
+               ' AND ROOM_TYPE = "' + req.params.roomtype + '"';
+  lodgingtypes = req.params.lodgingtypes.split('-');
+  for (var i = 0; i < lodgingtypes.length; i++) {
+    conj = (i==0) ? 'AND' : 'OR';
+    query += (' ' + conj + ' PROPERTY_TYPE = "' + lodgingtypes[i]+ '"')
+  }
+  console.log(query)
 });
 
 router.get('/create-account', function(req, res, next) {
