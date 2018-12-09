@@ -45,37 +45,63 @@ Databases:
   { name: 'NUMBER_OF_REVIEWS' },
   { name: 'REVIEW_SCORES_RATING' },
   { name: 'REVIEW_SCORES_LOCATION' } ]
+
+  YELP_DATA SCHEMA:
+  [ { name: 'CAMIS' },
+  { name: 'ID' },
+  { name: 'NAME' },
+  { name: 'URL' },
+  { name: 'PHONE' },
+  { name: 'LATITUDE' },
+  { name: 'LONGITUDE' },
+  { name: 'REVIEW_COUNT' },
+  { name: 'PRICE' },
+  { name: 'RATING' },
+  { name: 'TRANSACTIONS' },
+  { name: 'CATEGORIES' },
+  { name: 'ADDRESS' },
+  { name: 'CITY' },
+  { name: 'STATE' },
+  { name: 'ZIP_CODE' } ]
+
+  AIRBNB_ADDRESS SCHEMA:
+  [ { name: 'ID' },
+  { name: 'NEIGHBOURHOOD' },
+  { name: 'ZIPCODE' },
+  { name: 'LATITUDE' },
+  { name: 'LONGITUDE' } ]
 */
 
 
 // Connect string to Oracle DB
 
+/*
+var connection = oracledb.getConnection(
+  {
+  user     : 'foodforthought',
+  password : 'foodforthought',
+  connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+  },
+  connExecute
+);
 
-// var connection = oracledb.getConnection(
-//   {
-//   user     : 'foodforthought',
-//   password : 'foodforthought',
-//   connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
-//   },
-//   connExecute
-// );
-
-// function connExecute(err, connection) {
-//   if (err) {
-//     console.error(err.message);
-//     return;
-//   }
-//   connection.execute(
-//     'SELECT DISTINCT ROOM_TYPE FROM AIRBNB',
-//     function(err, result) {
-//       if (err) {
-//         console.error(err.message); return;
-//       } else {
-//         console.log(result.metaData);
-//         console.log(result.rows);  // print all returned rows
-//       }
-//     });
-// }
+function connExecute(err, connection) {
+  if (err) {
+    console.error(err.message);
+    return;
+  }
+  connection.execute(
+    'SELECT DISTINCT CATEGORIES FROM YELP_DATA',
+    function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        console.log(result.metaData);
+        console.log(result.rows);  // print all returned rows
+      }
+    });
+}
+*/
 
 app.use(cookieParser());
 
@@ -125,8 +151,56 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
-router.get('/:lat/:lon/:zoom', function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, next) {
+  switch(req.params.roomtype) {
+    case 'private-room':
+      var rt = 'Private room'
+      break;
+    case 'shared-room':
+      var rt = 'Shared room'
+      break;
+    case 'entire-home':
+      var rt = 'Entire home/apt'
+      break;
+  }
+  
+  var query = "SELECT * FROM AIRBNB \
+               JOIN AIRBNB_ADDRESS ON AIRBNB.ID = AIRBNB_ADDRESS.ID \
+               WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) +
+               " AND ROOM_TYPE = '" + rt + "' ";
+  lodgingtypes = req.params.lodgingtypes.split('-');
+  for (var i = 0; i < lodgingtypes.length; i++) {
+    lt = (lodgingtypes[i]).charAt(0).toUpperCase() + (lodgingtypes[i]).slice(1);
+    conj = (i==0) ? "AND (" : "OR";
+    query += (conj + " PROPERTY_TYPE = '" + lt + "' ")
+  }
+  query += ")"
+  console.log(query);
+
+
+  var connection = oracledb.getConnection(
+    {
+    user     : 'foodforthought',
+    password : 'foodforthought',
+    connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+    },
+    connExecute
+  );
+
+  function connExecute(err, connection) {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    connection.execute(query, function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        console.log(result.metaData);
+        console.log(result.rows);  // print all returned rows
+      }
+    });
+  }
 });
 
 router.get('/create-account', function (req, res, next) {
