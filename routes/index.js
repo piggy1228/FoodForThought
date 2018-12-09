@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-//const oracledb = require('oracledb');
+const oracledb = require('oracledb');
 const router = express.Router();
 var cookieParser = require('cookie-parser');
 var app = express();
@@ -91,6 +91,7 @@ function connExecute(err, connection) {
     });
 }
 */
+
 
 app.use(cookieParser());
 
@@ -192,6 +193,7 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
   }
 });
 
+/*
 router.get('/create-account', function (req, res, next) {
   console.log(res.message);
   res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
@@ -219,22 +221,9 @@ router.post('/create-account', function (req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
-/*
-router.get('/create-account/data/:login/:name/:sex/:RelationshipStatus/:Birthyear', function(req,res) {
-  var query = 'INSERT INTO Person VALUES ("' +
-    req.params.login + '", "' +
-    req.params.name + '", "' +
-    req.params.sex + '", "' +
-    req.params.RelationshipStatus + '", ' +
-    req.params.Birthyear + ');'
-  connection.query(query, function(err, rows, fields) {
-    if (err) console.log(err);
-    else {
-        console.log('Record Inserted');
-    }  
-    });
-});
-*/
 
 app.listen(3000);
+
+*/
+
 module.exports = router;
