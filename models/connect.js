@@ -1,0 +1,1 @@
+module.exports="mongodb://admin:admin1@ds113522.mlab.com:13522/foodforthought";
