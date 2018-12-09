@@ -2,6 +2,7 @@ var app = angular.module('foodForThought',[]);
 
 app.controller('mainFormController', function($scope, $http) {
     $scope.Submit = function() {
+        console.log('HELLO!')
         matches = JSON.stringify($scope.lodgingtype).match(/"(.*?)":/g)
         resStr = '';
         for (x in matches) {
