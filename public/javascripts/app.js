@@ -2,7 +2,7 @@ var app = angular.module('foodForThought',[]);
 
 app.controller('mainFormController', function($scope, $http) {
     $scope.Submit = function() {
-        console.log('HELLO!')
+        console.log('SUBMIT BUTTON PRESSED')
         matches = JSON.stringify($scope.lodgingtype).match(/"(.*?)":/g)
         resStr = '';
         for (x in matches) {
@@ -21,7 +21,6 @@ app.controller('mainFormController', function($scope, $http) {
         var request = $http.get(request_string);
         request.success(function(data) {
             $scope.data = data;
-
             angular.forEach($scope.data, function(value, index) {
                 console.log('Hi!  You are inside angular.forEach function');
                 var lat = value.latitude;
