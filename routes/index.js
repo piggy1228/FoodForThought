@@ -4,6 +4,17 @@ const path = require('path');
 const router = express.Router();
 var cookieParser = require('cookie-parser');
 var app = express();
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+var url = 'mongodb://novater:jk10160302@ds113522.mlab.com:13522/foodforthought';
+
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  db.close();
+});
 
 /*
 Databases:
