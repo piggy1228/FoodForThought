@@ -20,6 +20,16 @@ app.controller('mainFormController', function($scope, $http) {
         var request = $http.get(request_string);
         request.success(function(data) {
             $scope.data = data;
+
+            angular.forEach($scope.data, function(value, index) {
+                console.log('HEY!!!');
+                var lat = value.latitude;
+                var lng = value.longitude;
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat, lng),
+                    map: Map.map
+                });
+            });
         });
         request.error(function(data) {
             console.log('error on request: ' + request_string);
