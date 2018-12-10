@@ -1,6 +1,12 @@
 var app = angular.module('foodForThought',[]);
 
 app.controller('mainController', function($scope, $http) {
+    // Initialize form values
+    $scope.num_travelers = 2;
+    $scope.room_type = 'private-room'
+
+
+    // Set up map
     var mapOptions = {
       zoom: 12,
       center: new google.maps.LatLng(40.758896, -73.985130),

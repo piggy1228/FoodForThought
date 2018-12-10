@@ -21,26 +21,22 @@
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
         <div class="container" ng-controller="mainController" style="padding-top: 30px;">
-        <h4 class="title"> Welcome to our lodging and dining service {{user}}!</h4>
+        <h4 class="title"> Welcome to our lodging and dining service, <font color='DodgerBlue'><b>{{user}}</b></font>!</h4>
         <h3 class="title" style="margin-bottom: 30px;"> Tell us a bit about your perfect vacation...</h3>
 
             <div class="jumbotron mapcontainer" style="height: 300px">
                 <div class="mapform">
                     <div style="float:left;margin-right:20px;">
                         <div class = "form-group mapform">
-                            <label for="lp">Max Lodging Price:</label>
-                            <input type="text" id="lp">                            
-                            <input type="range" min="0" max="1000" value="25">
+                            <span><label for="lp">Lodging Price:</label><p id="lp">$0-$200</p></span>
+                            <input type="range" id="lp-range" ng-model="lp" min="0" max="500" value="200" oninput = "updateText('lp-range', 'lp', 500)">
                         </div>
                         <div class = "form-group mapform">
-                            <label for="rp">Max Restaurant Price:</label>
-                            <input type="text" id="rp">
-                            <div id="slider-restaurant-price"></div>
+                            <span><label for="rp">Restaurant Price:</label><p id="rp">$0-$30</p></span>
+                            <input type="range" id="rp-range" ng-model="rp" min="0" max="100" value="30" oninput = "updateText('rp-range', 'rp', 100)">
                         </div>
-                        <input type="hidden" id="lpmin" ng-model="lpmin" ng-value=5>
-                        <input type="hidden" id="lpmax" ng-model="lpmax">
-                        <input type="hidden" id="rpmin" ng-model="rpmin">
-                        <input type="hidden" id="rpmax" ng-model="rpmax">
+                    </div>
+                    <div style="float:left;margin-right:20px;">
                         <div class = "form-group mapform">
                         <label style="display:block">Lodging Type:</label>
                             <table>
@@ -57,12 +53,6 @@
                                     <th><input class="checkbutton" type="checkbox" name="lodgingtype" ng-model="lodgingtype.hostel" value="hostel"> Hostel
                                 </tr>
                             </table>
-                        </div>                    
-                    </div>
-                    <div style="float:left;margin-right:20px;">
-                        <div class = "form-group mapform">
-                            <label for="num_travelers">Number of Travelers: </label>
-                            <input type="number" id="num_travelers" ng-model="num_travelers" min="1" max="10+" style="width:50px" value=2>
                         </div>
                         <div class = "form-group mapform">
                             <label for="roomtype">Room Type:</label>
@@ -72,6 +62,27 @@
                                 <option value="entire-home">Entire Home</option>
                             </select>
                         </div>
+                        <div class = "form-group mapform">
+                            <label for="num_travelers">Number of Travelers: </label>
+                            <input type="number" id="num_travelers" ng-model="num_travelers" min="1" max="10" style="width:40px">
+                        </div>
+                    </div>
+                    <div style="float:left;margin-right:20px;">
+                        <div class = "form-group mapform">
+                            <label for="num_restaurants">Minimum # of nearby restaurants:</label>
+                            <input type="number" id="num_restaurants" ng-model="num_restaurants" min="1" max="10" style="width:40px">
+                        </div>
+                        <div class = "form-group mapform">
+                            <label for="good_types">Categories I like:</label>
+                            <input type="text" id="good_types" ng-model="good_types">
+                        </div>
+                        <div class = "form-group mapform">
+                            <label for="bad_types">Categories I dislike:</label>
+                            <input type="text" id="bad_types" ng-model="bad_types">
+                        </div>
+                    </div>
+                    <div style="float:left;margin-right:20px;">
+                        
                     </div>
                     <div class = "form-group mapform">
                             <button type="button" class="btn btn-info" ng-click="Submit()">
@@ -86,11 +97,18 @@
         </div>
 
         <script>
+        /*
         $(document).ready (function(){
             $(".alert").delay(4000).slideUp(200, function() {
                 $(this).alert('close');
             });
         });
+        */
+        var updateText = function(rangeId, textId, maxVal) {
+            var x = document.getElementById(rangeId).value;
+            suffix = (x == maxVal) ? '+' : '';
+            document.getElementById(textId).innerHTML = ('$0 - $' + x + suffix);
+        }
         </script>
 
     </body>
