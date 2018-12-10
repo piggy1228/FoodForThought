@@ -20,26 +20,27 @@
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
         <div class="container">
-            <h4> Hi {{user}}</h4>
-            <h3> Tell us a bit about your perfect vacation...</h3>
+        <h4> Hi {{user}}</h4>
+        <h3> Tell us a bit about your perfect vacation...</h3>
 
-            <div class="jumbotron" style="padding-bottom:15px; padding-top:15px; padding-left:30px; padding-right:30px;">
-                <div>
-                    <div class = "form-group">
-                        <label for="lp" style="display:block">Lodging Price:</label>
-                        <input type="text" id="lp" readonly style="border:0; color:cadetblue; font-weight:bold; margin-bottom:8px">
-                        <div id="slider-lodging-price"></div>
-                    </div>
-                    <div class = "form-group">
-                        <label for="rp" style="display:block; margin-top:15px">Restaurant Price:</label>
-                        <input type="text" id="rp" readonly style="border:0; color:cadetblue; font-weight:bold; margin-bottom:8px">
-                        <div id="slider-restaurant-price"></div>
-                    </div>
-                    <div class = "form-group">
-                        <label for="num_travelers">Number of Travelers: </label>
-                        <input type="number" id="num_travelers" ng-model="num_travelers" min="1" max="10+" style="width:50px" value=2>
-                    </div>
-                    <div class = "form-group">
+            <div class="jumbotron mapcontainer" style="height: 300px">
+                <div class="mapform" ng-controller="mainFormController">
+                    <div style="float:left;margin-right:20px;">
+                        <div class = "form-group mapform">
+                            <label for="lp">Lodging Price:</label>
+                            <input type="text" id="lp">
+                            <div id="slider-lodging-price"></div>
+                        </div>
+                        <div class = "form-group mapform">
+                            <label for="rp">Restaurant Price:</label>
+                            <input type="text" id="rp">
+                            <div id="slider-restaurant-price"></div>
+                        </div>
+                        <input type="hidden" id="lpmin" ng-model="lpmin" ng-value=5>
+                        <input type="hidden" id="lpmax" ng-model="lpmax">
+                        <input type="hidden" id="rpmin" ng-model="rpmin">
+                        <input type="hidden" id="rpmax" ng-model="rpmax">
+                        <div class = "form-group mapform">
                         <label style="display:block">Lodging Type:</label>
                             <table>
                                 <tr>
