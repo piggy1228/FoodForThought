@@ -1,7 +1,6 @@
 var app = angular.module('foodForThought',[]);
 
 app.controller('mainController', function($scope, $http) {
-
     var mapOptions = {
       zoom: 12,
       center: new google.maps.LatLng(40.758896, -73.985130),

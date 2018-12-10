@@ -15,8 +15,8 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="/stylesheets/style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> 
-
     </head>
+
     <div>{{{message}}}</div>
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
@@ -28,12 +28,12 @@
                 <div class="mapform">
                     <div style="float:left;margin-right:20px;">
                         <div class = "form-group mapform">
-                            <label for="lp">Lodging Price:</label>
-                            <input type="text" id="lp">
-                            <div id="slider-lodging-price"></div>
+                            <label for="lp">Max Lodging Price:</label>
+                            <input type="text" id="lp">                            
+                            <input type="range" min="0" max="1000" value="25">
                         </div>
                         <div class = "form-group mapform">
-                            <label for="rp">Restaurant Price:</label>
+                            <label for="rp">Max Restaurant Price:</label>
                             <input type="text" id="rp">
                             <div id="slider-restaurant-price"></div>
                         </div>
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div>
-                <div id="map" style="width:100%;height:500px;"></div>
+                <div id="map" style="width:100%;height:800px;"></div>
             </div>
         </div>
 
