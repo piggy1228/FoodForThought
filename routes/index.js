@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const oracledb = require('oracledb');
+//const oracledb = require('oracledb');
 const router = express.Router();
 var app = express();
 
@@ -64,8 +64,8 @@ Databases:
 
 
 // Connect string to Oracle DB
-
 /*
+
 var connection = oracledb.getConnection(
   {
   user     : 'foodforthought',
@@ -90,8 +90,8 @@ function connExecute(err, connection) {
         console.log(result.rows);  // print all returned rows
       }
     });
-}
-*/
+} */
+
 router.use(require('cookie-parser')());
 
 
@@ -101,7 +101,6 @@ router.use('/create-account', function (req, res, next) {
   if (req.method == 'POST') {
     if (req.body.login === "login") {
 
-      console.log("BITCH TRYNA LOG IN");
       req.body.success = 0;
       req.body.login = 1;
 
@@ -164,7 +163,7 @@ router.post('/', function (req, res, next) {
           res.render('index', { 'user': theUser[0].username});
         } else {
   
-          res.render('index', { 'user': 'guest user!'});
+          res.render('index', { 'user': 'guest user'});
         }
         
       }
@@ -182,7 +181,7 @@ router.get('/', function(req, res, next) {
 
   if (!usercookie) {
     res.render('index', {
-      'user': 'guest user!'
+      'user': 'guest user'
     });
   } else {
     res.render('index', {
@@ -243,7 +242,35 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
   }
 });
 
-router.post('/about', function (req, res, next) {
+router.get('/account', function (req, res, next) {
+
+  if (req.cookies.user !== undefined) {
+
+    models.user.find( { username: req.cookies.user, email: req.cookies.email }, function(error, theUser) {
+      if (error) {
+        //NO IMPLEMENTATION
+        console.log(error);
+      } else {
+
+        if (theUser[0] !== undefined) {
+          console.log(theUser);
+          console.log(theUser[0].username);
+          res.render('account', { 'user': theUser[0]});
+        } else {
+
+          res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
+            "You are not registered, please create a new account!</div>"});
+        }
+      }
+    });
+  } else {
+    res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
+            "You are not registered, please create a new account!</div>"});
+  }
+  
+  
+});
+router.post('/account', function (req, res, next) {
 
   if (req.body.login == "login") {
     models.user.find( { username: req.body.user, password: req.body.pass }, function(error, theUser) {
@@ -257,7 +284,8 @@ router.post('/about', function (req, res, next) {
           console.log(theUser[0].username);
           res.cookie('user', theUser[0].username);
           res.cookie('email', theUser[0].email);
-          res.render('index', { 'user': theUser[0].username});
+          res.render('index', { 'user': theUser[0].username, 'message': "<div class='alert alert-success' id='success-alert' role='alert' style='text-align = center;'>" + 
+            "Logged in :)</div>"});
         } else {
   
           res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
@@ -267,7 +295,7 @@ router.post('/about', function (req, res, next) {
     });   
   } else {
     console.log("CREATE");
-    res.render("create-account");
+    res.render("index");
   }
 });
 
@@ -281,7 +309,6 @@ router.post('/create-account', function (req, res, next) {
 
   if (req.body.login == 1) {
 
-    console.log("TRYNA LOG IN NOW B");
     console.log("username is " + req.body.user);
     console.log("password is " + req.body.pass);
     models.user.find( { username: req.body.user, password: req.body.pass }, function(error, theUser) {
@@ -295,7 +322,8 @@ router.post('/create-account', function (req, res, next) {
           console.log(theUser[0].username);
           res.cookie('user', theUser[0].username);
           res.cookie('email', theUser[0].email);
-          res.render('index', { 'user': theUser[0].username});
+          res.render('index', { 'user': theUser[0].username, 'message': "<div class='alert alert-success' id='success-alert' role='alert' style='text-align = center;'>" + 
+            "Logged in :)</div>"});
         } else {
   
           res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
@@ -351,7 +379,7 @@ router.post('/create-account', function (req, res, next) {
 router.get('/logout', function (req, res, next) {
   res.clearCookie('user');
   res.clearCookie('email');
-  res.render('index', { 'user': 'guest user!'});
+  res.render('index', { 'user': 'guest user'});
 });
 
 module.exports = router;
