@@ -19,23 +19,14 @@
         <div class="jumbotron" style="background-color:lightyellow; padding:5px">
             <h2><b><center>{{yName}}</center></b></h2>
             <p style="color:crimson"><b>
+            {{yPrice}}
             {{#each yCategories}}
-                {{cat}} |
+                | {{cat}}
             {{/each}}
             </b></p>
-            <p>+{{yPhone}}</p>
+            <h5></b>{{yRating}} Stars</b></h5>
+            <p>{{yPhone}}</p>
         </div>
     </div>
     </a>
 {{/each}}
-
-<script>
-    var yelpData = Handlebars.compile()
-    console.log({{aName}});
-</script>
-
-{{!-- <div ng-repeat="x in yelpData" class = "container">
-    <div class = "jumbotron">
-        <h3>{{x.yName}}</h3>
-    </div>
-</div> --}}

@@ -288,16 +288,20 @@ router.get('/airbnb-detail/:id', function(req, res, next) {
             word = word.replace('_', ' ');
             categories.push({cat: word})
           }
+          phone = data[i][20].toString()
+          phoneStr = '+1(' + phone.substring(1,4) +
+            ')-' + phone.substring(4,7) + '-' +
+            phone.substring(7,11);
 
           restaurant = {
             yID: data[i][17],
             yName: data[i][18],
             yURL: data[i][19],
-            yPhone: data[i][20],
+            yPhone: phoneStr,
             yLat: data[i][21],
             yLng: data[i][22],
             yNumReviews: data[i][23],
-            yPrice: data[i][24],
+            yPrice: '$'.repeat(data[i][24]),
             yRating: data[i][25],
             yTransactions: data[i][26],
             yCategories: categories
