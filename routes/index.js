@@ -254,8 +254,77 @@ var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.ID, \
 
 router.get('/airbnb-detail/:id', function(req, res, next) {
   id = req.params.id
+  query = 'SELECT * FROM AIRBNB \
+           JOIN NEARBY ON AIRBNB.ID = ARIBNBID \
+           JOIN YELP_DATA ON YELP_DATA.ID = YELPID \
+           WHERE AIRBNB.ID = ' + req.params.id;
+  var connection = oracledb.getConnection(
+    {
+    user     : 'foodforthought',
+    password : 'foodforthought',
+    connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+    },
+    connExecute
+  );
 
-  res.render('detail')
+  function connExecute(err, connection) {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    connection.execute(query, function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        data = result.rows
+        var START_YELP_DATA = 16
+        yData = new Array();
+        for (var i = 0; i < data.length; i++) {
+          matches = (data[i][27]).match(/'(.*?)'/g);
+          categories = new Array()
+          for (var j = 0; j < matches.length; j++) {
+            word = matches[j].substr(1, matches[j].length - 2)
+            word = word.charAt(0).toUpperCase() + word.slice(1);
+            word = word.replace('_', ' ');
+            categories.push({cat: word})
+          }
+
+          restaurant = {
+            yID: data[i][17],
+            yName: data[i][18],
+            yURL: data[i][19],
+            yPhone: data[i][20],
+            yLat: data[i][21],
+            yLng: data[i][22],
+            yNumReviews: data[i][23],
+            yPrice: data[i][24],
+            yRating: data[i][25],
+            yTransactions: data[i][26],
+            yCategories: categories
+          };        
+          yData.push(restaurant);
+        }
+
+        object = {
+          aName: data[0][1],
+          aURL: data[0][2],
+          aNeighbourhood: data[0][3],
+          aZipCode: data[0][4],
+          aPrice: data[0][5],
+          aWeeklyPrice: data[0][6],
+          aPropertyType: data[0][7],
+          aRoomType: data[0][8],
+          aMonthlyPrice: data[0][9],
+          aAccomodates: data[0][10],
+          aNumReviews: data[0][11],
+          aRating: data[0][12],
+          aLocationRating: data[0][13],
+          yelpData: yData
+        }
+        res.render('detail', object);
+      }
+    });
+  }
 });
 
 router.get('/account', function (req, res, next) {
@@ -419,7 +488,6 @@ router.get('/init', function(req, res, next) {
       if (err) {
         console.error(err.message); return;
       } else {
-        console.log(result.rows);
         res.json(result.rows)  // print all returned rows
       }
     });

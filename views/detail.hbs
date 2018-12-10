@@ -1,0 +1,41 @@
+<style>
+    .col {
+        padding-left:30px;
+        padding-right:30px;
+    }
+</style>
+
+<div>{{message}}</div>
+<a href = {{aURL}} style="text-decoration:none; color:black;">
+<div class="jumbotron" style="background-color:#CCFFCC; padding:20px">
+    <h1><b><center>{{aName}}</center></b></h1>
+    <h3><center>{{aNeighbourhood}} {{aPropertyType}} ({{aRoomType}})</center></h3>
+</div>
+</a>
+
+{{#each yelpData}}
+    <div class="container" style="width:600px">
+        <a href = {{yURL}} style="text-decoration:none; color:black;">
+        <div class="jumbotron" style="background-color:lightyellow; padding:5px">
+            <h2><b><center>{{yName}}</center></b></h2>
+            <p style="color:crimson"><b>
+            {{#each yCategories}}
+                {{cat}} |
+            {{/each}}
+            </b></p>
+            <p>+{{yPhone}}</p>
+        </div>
+    </div>
+    </a>
+{{/each}}
+
+<script>
+    var yelpData = Handlebars.compile()
+    console.log({{aName}});
+</script>
+
+{{!-- <div ng-repeat="x in yelpData" class = "container">
+    <div class = "jumbotron">
+        <h3>{{x.yName}}</h3>
+    </div>
+</div> --}}

@@ -54,7 +54,7 @@ app.controller('mainController', function($scope, $http) {
       var link = document.createElement('a');
       var strong = document.createElement('h4');
       strong.textContent = name;
-      link.setAttribute('href', '/lodging/' + airbnb_id);
+      link.setAttribute('href', '/airbnb-detail/' + airbnb_id);
       link.appendChild(strong);
       var description = document.createElement('strong');
       var description2 = document.createElement('text');
@@ -111,7 +111,7 @@ app.controller('mainController', function($scope, $http) {
         //
         $scope.num_travelers + '/' +
         $scope.num_restaurants + '/' + 
-        resStr + '/' + // lodgingtypes, separates by a hyphen (-)
+        resStr + '/' + // lodgingtypes, separated by a hyphen (-)
         $scope.roomtype + '/'
         var request = $http.get(request_string);
         request.success(function(data) {
