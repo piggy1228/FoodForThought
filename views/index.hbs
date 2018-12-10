@@ -17,11 +17,12 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> 
 
     </head>
+    <div>{{{message}}}</div>
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
-        <div class="container">
-        <h4> Hi {{user}}</h4>
-        <h3> Tell us a bit about your perfect vacation...</h3>
+        <div class="container" style="padding-top: 30px;">
+        <h4 class="title"> Welcome to our lodging and dining service {{user}}!</h4>
+        <h3 class="title" style="margin-bottom: 30px;"> Tell us a bit about your perfect vacation...</h3>
 
             <div class="jumbotron mapcontainer" style="height: 300px">
                 <div class="mapform" ng-controller="mainFormController">
@@ -90,6 +91,13 @@
         </div>
 
         <script>
+
+        $(document).ready (function(){
+            $(".alert").delay(4000).slideUp(200, function() {
+                $(this).alert('close');
+            });
+        });
+
         var customLabel = {
             restaurant: {
             label: 'R'

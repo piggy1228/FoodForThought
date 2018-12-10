@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const oracledb = require('oracledb');
+//const oracledb = require('oracledb');
 const router = express.Router();
 var app = express();
 
@@ -252,7 +252,7 @@ router.post('/about', function (req, res, next) {
         console.log(error);
       } else {
 
-        if (theUser !== undefined) {
+        if (theUser[0] !== undefined) {
           console.log(theUser);
           console.log(theUser[0].username);
           res.cookie('user', theUser[0].username);
@@ -260,7 +260,8 @@ router.post('/about', function (req, res, next) {
           res.render('index', { 'user': theUser[0].username});
         } else {
   
-          res.render('index', { 'user': 'guest user!'});
+          res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
+            "You are not registered, please create a new account!</div>"});
         }
       }
     });   
@@ -289,7 +290,7 @@ router.post('/create-account', function (req, res, next) {
         console.log(error);
       } else {
 
-        if (theUser !== undefined) {
+        if (theUser[0] !== undefined) {
           console.log(theUser);
           console.log(theUser[0].username);
           res.cookie('user', theUser[0].username);
@@ -297,7 +298,8 @@ router.post('/create-account', function (req, res, next) {
           res.render('index', { 'user': theUser[0].username});
         } else {
   
-          res.render("create-account");
+          res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
+            "You are not registered, please create a new account!</div>"});
         }
         
       }
@@ -329,18 +331,27 @@ router.post('/create-account', function (req, res, next) {
       });
 
       console.log("DO DATABASE THINGS");
-      res.render('index', { 'user': username});
+      res.render('index', { 'user': username, 'message': "<div class='alert alert-success' id='success-alert' role='alert' style='text-align = center;'>" + 
+            "Successfully created your account! Start planning now :)</div>"});
 
     } else {
       console.log("DONT DO DATABASE THINGS");
       if (req.cookies.user) {
-        res.render('index', { 'user': req.cookies.user});
+        res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
+            "Please make sure you entered valid signup information. " +
+            "Also, you already are logged into an account, are you sure you want to create a new one?</div>"});
       } else {
-        res.render('index', { 'user': 'guest user!'});
+          res.render('insert', { 'message' : "<div class='alert alert-danger' role='alert'>" + 
+            "You entered invalid signup information. Please try again.</div>"});
       } 
     }    
   }
 });
 
+router.get('/logout', function (req, res, next) {
+  res.clearCookie('user');
+  res.clearCookie('email');
+  res.render('index', { 'user': 'guest user!'});
+});
 
 module.exports = router;
