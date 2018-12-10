@@ -160,8 +160,8 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
       break;
   }
   
-  var query = "SELECT * FROM AIRBNB \
-               JOIN AIRBNB_ADDRESS ON AIRBNB.ID = AIRBNB_ADDRESS.ID \
+  var query = "SELECT LATITUDE, LONGITUDE, NAME, LISTING_URL, PRICE, AIRBNB.NEIGHBOURHOOD, REVIEW_SCORES_RATING, ACCOMMODATES, PROPERTY_TYPE, ROOM_TYPE \
+               FROM AIRBNB JOIN AIRBNB_ADDRESS ON AIRBNB.ID = AIRBNB_ADDRESS.ID \
                WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) +
                " AND ROOM_TYPE = '" + rt + "' ";
   lodgingtypes = req.params.lodgingtypes.split('-');
@@ -193,7 +193,7 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
         console.error(err.message); return;
       } else {
         console.log(result.metaData);
-        console.log(result.rows);  // print all returned rows
+        res.json(result.rows)  // print all returned rows
       }
     });
   }
