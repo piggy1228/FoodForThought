@@ -94,42 +94,86 @@ function connExecute(err, connection) {
 */
 router.use(require('cookie-parser')());
 
-/*
+
 router.use('/create-account', function (req, res, next) {
   console.log("REQUEST TYPE IS " + req.method);
+
   if (req.method == 'POST') {
+    if (req.body.login === "login") {
 
-    var username = req.body.username;
-    var email = req.body.email;
-    var password = req.body.pass;
-    var repeatPass = req.body.repeatpass;
-    var isValid = 1;
-
-    if (password !== repeatPass) {
-      isValid = 0;
-    }
-
-    if (password === "") {
-      isValid = 0;
-    }
-
-    if (username === "") {
-      isValid = 0;
-    }
-
-    if (isValid) {
-      req.body.success = 1;
-      next();
-    } else {
+      console.log("BITCH TRYNA LOG IN");
       req.body.success = 0;
+      req.body.login = 1;
+
       next();
+
+    } else {
+      var username = req.body.username;
+      var email = req.body.email;
+      var password = req.body.pass;
+      var repeatPass = req.body.repeatpass;
+      var login = req.body.login;
+
+      var isValid = 1;
+
+      if (password !== repeatPass) {
+        isValid = 0;
+      }
+
+      if (password === "" || password == undefined) {
+        isValid = 0;
+      }
+
+      if (username === "" || username == undefined) {
+        isValid = 0;
+      }
+
+      if (email === "" || email == undefined) {
+        isValid = 0;
+      }
+
+
+      if (isValid) {
+        req.body.success = 1;
+        next();
+      } else {
+        req.body.success = 0;
+        next();
+      }    
     }
   } else {
     req.body.success = 0;
     next();
   }
 });
-*/
+
+router.post('/', function (req, res, next) {
+
+  if (req.body.login == "login") {
+    models.user.find( { username: req.body.user, password: req.body.pass }, function(error, theUser) {
+      if (error) {
+        //NO IMPLEMENTATION
+        console.log(error);
+      } else {
+
+        if (theUser !== undefined) {
+          console.log(theUser);
+          console.log(theUser[0].username);
+          res.cookie('user', theUser[0].username);
+          res.cookie('email', theUser[0].email);
+          res.render('index', { 'user': theUser[0].username});
+        } else {
+  
+          res.render('index', { 'user': 'guest user!'});
+        }
+        
+      }
+    });   
+  } else {
+    console.log("CREATE");
+    res.render("create-account");
+  }
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -199,6 +243,34 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
   }
 });
 
+router.post('/about', function (req, res, next) {
+
+  if (req.body.login == "login") {
+    models.user.find( { username: req.body.user, password: req.body.pass }, function(error, theUser) {
+      if (error) {
+        //NO IMPLEMENTATION
+        console.log(error);
+      } else {
+
+        if (theUser !== undefined) {
+          console.log(theUser);
+          console.log(theUser[0].username);
+          res.cookie('user', theUser[0].username);
+          res.cookie('email', theUser[0].email);
+          res.render('index', { 'user': theUser[0].username});
+        } else {
+  
+          res.render('index', { 'user': 'guest user!'});
+        }
+      }
+    });   
+  } else {
+    console.log("CREATE");
+    res.render("create-account");
+  }
+});
+
+
 router.get('/create-account', function (req, res, next) {
   console.log(res.message);
   res.render('insert');
@@ -206,40 +278,67 @@ router.get('/create-account', function (req, res, next) {
 
 router.post('/create-account', function (req, res, next) {
 
-  console.log(req.body.username);
-  console.log(req.body.email);
-  console.log(req.body.pass);
-  console.log(req.body.success);
+  if (req.body.login == 1) {
 
-  var username = req.body.username;
-  var email = req.body.email;
-  var password = req.body.pass;
+    console.log("TRYNA LOG IN NOW B");
+    console.log("username is " + req.body.user);
+    console.log("password is " + req.body.pass);
+    models.user.find( { username: req.body.user, password: req.body.pass }, function(error, theUser) {
+      if (error) {
+        //NO IMPLEMENTATION
+        console.log(error);
+      } else {
+
+        if (theUser !== undefined) {
+          console.log(theUser);
+          console.log(theUser[0].username);
+          res.cookie('user', theUser[0].username);
+          res.cookie('email', theUser[0].email);
+          res.render('index', { 'user': theUser[0].username});
+        } else {
   
-  if (req.body.success) {
-    // DO DATABASE THINGS
-
-    res.cookie('user', username);
-    res.cookie('email', email);
-    var newUser = new models.user({
-      username: username,
-      email: email,
-      password: password
+          res.render("create-account");
+        }
+        
+      }
     });
-    
-    newUser.save(function(error) {
-
-    });
-
-    console.log("DO DATABASE THINGS");
-    res.render('index', { 'user': username});
 
   } else {
-    console.log("DONT DO DATABASE THINGS");
-    if (req.cookies.user) {
-      res.render('index', { 'user': req.cookies.user});
+    console.log(req.body.username);
+    console.log(req.body.email);
+    console.log(req.body.pass);
+    console.log(req.body.success);
+
+    var username = req.body.username;
+    var email = req.body.email;
+    var password = req.body.pass;
+    
+    if (req.body.success) {
+      // DO DATABASE THINGS
+
+      res.cookie('user', username);
+      res.cookie('email', email);
+      var newUser = new models.user({
+        username: username,
+        email: email,
+        password: password
+      });
+      
+      newUser.save(function(error) {
+
+      });
+
+      console.log("DO DATABASE THINGS");
+      res.render('index', { 'user': username});
+
     } else {
-      res.render('index', { 'user': 'guest user!'});
-    } 
+      console.log("DONT DO DATABASE THINGS");
+      if (req.cookies.user) {
+        res.render('index', { 'user': req.cookies.user});
+      } else {
+        res.render('index', { 'user': 'guest user!'});
+      } 
+    }    
   }
 });
 
