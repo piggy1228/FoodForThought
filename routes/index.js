@@ -192,7 +192,7 @@ router.get('/', function(req, res, next) {
   }
 });
 
-router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, next) {
+router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/', function(req, res, next) {
   switch(req.params.roomtype) {
     case 'private-room':
       var rt = 'Private room'
@@ -206,7 +206,7 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
   }
   
 minRestaurants = 1; // Hard-coded, for now!
-var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.LISTING_URL, \
+var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.ID, \
                A.PRICE, A.NEIGHBOURHOOD, A.REVIEW_SCORES_RATING, A.ACCOMMODATES, \
                A.PROPERTY_TYPE, A.ROOM_TYPE";
 
@@ -223,7 +223,7 @@ var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.LISTING_URL, \
     conj = (i==0) ? "AND (" : "OR";
     query += (conj + " PROPERTY_TYPE = '" + lt + "' ")
   }
-  query += (") GROUP BY " + attributes + " HAVING COUNT(*) >= " + minRestaurants)
+  query += (") GROUP BY " + attributes + " HAVING COUNT(*) >= " + req.params.numrestaurants)
   console.log(query);
 
 
@@ -250,6 +250,12 @@ var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.LISTING_URL, \
       }
     });
   }
+});
+
+router.get('/airbnb-detail/:id', function(req, res, next) {
+  id = req.params.id
+
+  res.render('detail')
 });
 
 router.get('/account', function (req, res, next) {
@@ -391,5 +397,34 @@ router.get('/logout', function (req, res, next) {
   res.clearCookie('email');
   res.render('index', { 'user': 'guest user'});
 });
+
+router.get('/init', function(req, res, next) {
+  var query = 'SELECT DISTINCT NEIGHBOURHOOD FROM AIRBNB'
+  
+  var connection = oracledb.getConnection(
+    {
+    user     : 'foodforthought',
+    password : 'foodforthought',
+    connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+    },
+    connExecute
+  );
+
+  function connExecute(err, connection) {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+    connection.execute(query, function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        console.log(result.rows);
+        res.json(result.rows)  // print all returned rows
+      }
+    });
+  }
+});
+
 
 module.exports = router;

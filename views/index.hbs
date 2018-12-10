@@ -24,16 +24,16 @@
         <h4 class="title"> Welcome to our lodging and dining service, <font color='DodgerBlue'><b>{{user}}</b></font>!</h4>
         <h3 class="title" style="margin-bottom: 30px;"> Tell us a bit about your perfect vacation...</h3>
 
-            <div class="jumbotron mapcontainer" style="height: 300px">
+            <div class="jumbotron mapcontainer" style="height: 350px">
                 <div class="mapform">
                     <div style="float:left;margin-right:20px;">
                         <div class = "form-group mapform">
-                            <span><label for="lp">Lodging Price:</label><p id="lp">$0-$200</p></span>
-                            <input type="range" id="lp-range" ng-model="lp" min="0" max="500" value="200" oninput = "updateText('lp-range', 'lp', 500)">
+                            <span><label for="lp">Lodging Price:</label><p id="lp">$0-$250</p></span>
+                            <input type="range" id="lp-range" ng-model="lp" min="0" max="500" value="250" oninput = "updateText('lp-range', 'lp', 500)">
                         </div>
                         <div class = "form-group mapform">
-                            <span><label for="rp">Restaurant Price:</label><p id="rp">$0-$30</p></span>
-                            <input type="range" id="rp-range" ng-model="rp" min="0" max="100" value="30" oninput = "updateText('rp-range', 'rp', 100)">
+                            <span><label for="rp">Restaurant Price:</label><p id="rp">$0-$50</p></span>
+                            <input type="range" id="rp-range" ng-model="rp" min="0" max="100" value="50" oninput = "updateText('rp-range', 'rp', 100)">
                         </div>
                     </div>
                     <div style="float:left;margin-right:20px;">
@@ -74,18 +74,23 @@
                         </div>
                         <div class = "form-group mapform">
                             <label for="good_types">Categories I like:</label>
-                            <input type="text" id="good_types" ng-model="good_types">
+                            <input type="text" id="good_types" ng-model="good_types" placeholder="e.g. chinese, indian">
                         </div>
                         <div class = "form-group mapform">
                             <label for="bad_types">Categories I dislike:</label>
-                            <input type="text" id="bad_types" ng-model="bad_types">
+                            <input type="text" id="bad_types" ng-model="bad_types" placeholder="e.g. bar, italian, greek">
+                        </div>
+                        <div class = "form-group mapform">
+                            <label for="bad_types">Categories I dislike:</label>
+                            <input type="text" id="bad_types" ng-model="bad_types" placeholder="e.g. bar, italian, greek">
+                        </div>
+                        <div class = "form-group mapform">
+                            <label for="neighbourhood">Preferred Neighborhood:</label>
+                            <select ng-model="neighbourhood" ng-options= "x[0] for x in neighbourhoods"></select>
                         </div>
                     </div>
-                    <div style="float:left;margin-right:20px;">
-                        
-                    </div>
                     <div class = "form-group mapform">
-                            <button type="button" class="btn btn-info" ng-click="Submit()">
+                            <button type="button" class="btn btn-info" ng-click="Submit()" style="height:200px;width:100px">
                             <span class="glyphicon glyphicon-search"></span> Search
                             </button>
                     </div>

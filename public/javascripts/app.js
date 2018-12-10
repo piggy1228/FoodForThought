@@ -1,9 +1,21 @@
 var app = angular.module('foodForThought',[]);
 
 app.controller('mainController', function($scope, $http) {
+    
+    // Initialize fields in neighborhood dropdown
+    var request = $http.get('/init');
+    request.success(function(data) {
+        $scope.neighbourhoods = data;
+        console.log($scope.neighbourhoods)
+    });
+    request.error(function(data){
+        console.log('err');
+    });
+
+    
     // Initialize form values
     $scope.num_travelers = 2;
-    $scope.room_type = 'private-room'
+    $scope.num_restaurants = 1;
 
 
     // Set up map
@@ -29,7 +41,7 @@ app.controller('mainController', function($scope, $http) {
       var lat = row[0];
       var lng = row[1];
       var name = row[2];
-      var url = row[3];
+      var airbnb_id = row[3];
       var price = row[4];
       var neighborhood = row[5];
       var score = row[6];
@@ -42,7 +54,7 @@ app.controller('mainController', function($scope, $http) {
       var link = document.createElement('a');
       var strong = document.createElement('h4');
       strong.textContent = name;
-      link.setAttribute('href', url);
+      link.setAttribute('href', '/lodging/' + airbnb_id);
       link.appendChild(strong);
       var description = document.createElement('strong');
       var description2 = document.createElement('text');
@@ -98,6 +110,7 @@ app.controller('mainController', function($scope, $http) {
         // Insert price ranges of lodging and restaurants
         //
         $scope.num_travelers + '/' +
+        $scope.num_restaurants + '/' + 
         resStr + '/' + // lodgingtypes, separates by a hyphen (-)
         $scope.roomtype + '/'
         var request = $http.get(request_string);
