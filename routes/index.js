@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-//const oracledb = require('oracledb');
+const oracledb = require('oracledb');
 const router = express.Router();
 var app = express();
 

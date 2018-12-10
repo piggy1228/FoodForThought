@@ -20,12 +20,12 @@
     <div>{{{message}}}</div>
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
-        <div class="container" style="padding-top: 30px;">
+        <div class="container" ng-controller="mainController" style="padding-top: 30px;">
         <h4 class="title"> Welcome to our lodging and dining service {{user}}!</h4>
         <h3 class="title" style="margin-bottom: 30px;"> Tell us a bit about your perfect vacation...</h3>
 
             <div class="jumbotron mapcontainer" style="height: 300px">
-                <div class="mapform" ng-controller="mainFormController">
+                <div class="mapform">
                     <div style="float:left;margin-right:20px;">
                         <div class = "form-group mapform">
                             <label for="lp">Lodging Price:</label>
@@ -81,47 +81,18 @@
                     </div>
                 </div>
             </div>
-
-            <!--
-            <div ng-controller="MapController">
-            -->
             <div>
-                <div id="googleMap" style="width:100%;height:500px;"></div>
+                <div id="map" style="width:100%;height:500px;"></div>
             </div>
         </div>
 
         <script>
-
         $(document).ready (function(){
             $(".alert").delay(4000).slideUp(200, function() {
                 $(this).alert('close');
             });
         });
-
-        var customLabel = {
-            restaurant: {
-            label: 'R'
-            },
-            lodging: {
-            label: 'L'
-            }
-        };
-
-        function initMap() {
-            var mapProp= {
-                center:new google.maps.LatLng(40.758896, -73.985130),
-                zoom:12,
-            };
-            var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-
-            map.addListener('center_changed', function() {
-                console.log(marker.getPosition());
-            });
-
-            map.addListener('click', function() {
-                console.log('clicked!');
-            });
-        }
         </script>
+
     </body>
 </html>

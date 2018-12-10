@@ -68,6 +68,7 @@ app.controller('mainController', function($scope, $http) {
     }
 
     $scope.Submit = function() {
+        console.log('Submitted!');
         matches = JSON.stringify($scope.lodgingtype).match(/"(.*?)":/g)
         resStr = '';
         for (x in matches) {
@@ -96,27 +97,3 @@ app.controller('mainController', function($scope, $http) {
         })
     }
 })
-
-
-// app.controller('mapController', function($scope, $http) {
-
-// });
-
-app.controller('createAccountController', function($scope, $http) {
-    $scope.message="";
-    $scope.Insert = function() {
-        var request = $http.get('/create-account/data/' +
-            $scope.login + '/' +
-            $scope.name + '/' +
-            $scope.sex + '/' +
-            $scope.RelationshipStatus + '/' +
-            $scope.Birthyear + '/');
-        request.success(function(data) {
-            $scope.data = data;
-        });
-        request.error(function(data){
-            console.log('err');
-        });
-
-    };
-});
