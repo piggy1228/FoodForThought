@@ -20,28 +20,26 @@
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item hdr-btn">
-	        <a class="nav-link hdr-el" href="/login">About<span class="sr-only">(current)</span></a>
+	        <a class="nav-link hdr-el" href="/about">About<span class="sr-only">(current)</span></a>
 	      </li>
 	      <li class="nav-item hdr-btn">
-	        <a class="nav-link hdr-el" href="#">Find an Airbnb</a>
+	        <a class="nav-link hdr-el" href="/">Start Your Journey!</a>
 	      </li>
 	      <li class="nav-item hdr-btn">
-	        <a class="nav-link hdr-el" href="#">Search Restaurants</a>
-	      </li>
-	    <li class="nav-item hdr-btn">
 	        <a class="nav-link hdr-el" href="/create-account">Sign Up</a>
 	      </li>
 	    </ul>
 	    <form class="form-inline my-2 my-lg-0" method="POST">
-	      <input id="email-input" class="form-control mr-sm-2" type="form-text text-muted" placeholder="Username" aria-label="Search">
-	      <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Search">
+	      <input id="email-input" name="user" class="form-control mr-sm-2" type="form-text text-muted" placeholder="Username" aria-label="Search">
+	      <input class="form-control mr-sm-2" name="pass" type="password" placeholder="Password" aria-label="Search">
+	      <input name="login" id="login" value="login" style="display: none;">
 	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
 	    </form>
 	  </div>
 	</nav>
 
     {{{body}}}
-    
+
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNoYAxxuRzl4SWiI5Rb9i9i-uQq3F0moo&callback=initMap"></script>
 	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>

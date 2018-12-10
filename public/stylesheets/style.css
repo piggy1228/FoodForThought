@@ -52,7 +52,7 @@
 	background: rgba(0,0,0,0.7);
 }
 
-.form-group {
+.rowsignup {
 	font-family: "Lucida Console", Monaco, monospace;
 	color: #FFF;
 	opacity: 1.0;
@@ -65,4 +65,16 @@
 .btn {
 	font-family : inherit;
 	font-weight: inherit;
+}
+
+.checkbutton {
+	margin-left: 5px;
+}
+
+.mapcontainer {
+	padding-bottom:15px; 
+	padding-top:15px; 
+	padding-left:30px; 
+	padding-right:30px;
+	height: 100%;
 }

@@ -16,11 +16,6 @@
         <link rel="stylesheet" href="/stylesheets/style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> 
 
-        <style>
-            th, td {
-                padding-right:15px;
-            }
-        </style>
     </head>
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
@@ -28,57 +23,60 @@
         <h4> Hi {{user}}</h4>
         <h3> Tell us a bit about your perfect vacation...</h3>
 
-            <div class="jumbotron" style="padding-bottom:15px; padding-top:15px; padding-left:30px; padding-right:30px;">
+            <div class="jumbotron mapcontainer">
                 <div ng-controller="mainFormController">
                     <div style="float:left;margin-right:20px;">
-                        <div class = "form-group">
-                            <label for="lp" style="display:block">Lodging Price:</label>
-                            <input type="text" id="lp" readonly style="border:0; color:cadetblue; font-weight:bold; margin-bottom:8px">
+                        <div class = "form-group mapform">
+                            <label for="lp">Lodging Price:</label>
+                            <input type="text" id="lp">
                             <div id="slider-lodging-price"></div>
                         </div>
-                        <div class = "form-group">
-                            <label for="rp" style="display:block; margin-top:15px">Restaurant Price:</label>
-                            <input type="text" id="rp" readonly style="border:0; color:cadetblue; font-weight:bold; margin-bottom:8px">
+                        <div class = "form-group mapform">
+                            <label for="rp">Restaurant Price:</label>
+                            <input type="text" id="rp">
                             <div id="slider-restaurant-price"></div>
                         </div>
                         <input type="hidden" id="lpmin" ng-model="lpmin" ng-value=5>
                         <input type="hidden" id="lpmax" ng-model="lpmax">
                         <input type="hidden" id="rpmin" ng-model="rpmin">
                         <input type="hidden" id="rpmax" ng-model="rpmax">
-                    </div>
-                    <div class = "form-group">
-                        <label for="num_travelers">Number of Travelers: </label>
-                        <input type="number" id="num_travelers" ng-model="num_travelers" min="1" max="10+" style="width:50px" value=2>
-                    </div>
-                    <div class = "form-group">
+                        <div class = "form-group mapform">
                         <label style="display:block">Lodging Type:</label>
-                        <table>
-                            <tr>
-                                <th><input type="checkbox" name="lodgingtype" ng-model="lodgingtype.apartment" value="apartment"> Apartment
-                                <th><input type="checkbox" name="lodgingtype" ng-model="lodgingtype.condominium" value="condominium"> Condo
-                            </tr>
-                            <tr>
-                                <th><input type="checkbox" name="lodgingtype" ng-model="lodgingtype.loft" value="loft"> Loft
-                                <th><input type="checkbox" name="lodgingtype" ng-model="lodgingtype.house" value="house"> House
-                            </tr>
-                            <tr>
-                                <th><input type="checkbox" name="lodgingtype" ng-model="lodgingtype.hotel" value="hotel"> Hotel
-                                <th><input type="checkbox" name="lodgingtype" ng-model="lodgingtype.hostel" value="hostel"> Hostel
-                            </tr>
-                        </table>
+                            <table>
+                                <tr>
+                                    <th><input class="checkbutton" type="checkbox" name="lodgingtype" ng-model="lodgingtype.apartment" value="apartment"> Apartment
+                                    <th><input class="checkbutton" type="checkbox" name="lodgingtype" ng-model="lodgingtype.condominium" value="condominium"> Condo
+                                </tr>
+                                <tr>
+                                    <th><input class="checkbutton" type="checkbox" name="lodgingtype" ng-model="lodgingtype.loft" value="loft"> Loft
+                                    <th><input class="checkbutton" type="checkbox" name="lodgingtype" ng-model="lodgingtype.house" value="house"> House
+                                </tr>
+                                <tr>
+                                    <th><input class="checkbutton" type="checkbox" name="lodgingtype" ng-model="lodgingtype.hotel" value="hotel"> Hotel
+                                    <th><input class="checkbutton" type="checkbox" name="lodgingtype" ng-model="lodgingtype.hostel" value="hostel"> Hostel
+                                </tr>
+                            </table>
+                        </div>                    
                     </div>
-                    <div class = "form-group">
-                        <label for="roomtype">Room Type:</label>
-                        <select id="roomtype" ng-model="roomtype">
-                            <option value="private-room">Private Room</option>
-                            <option value="shared-room">Shared Room</option>
-                            <option value="entire-home">Entire Home</option>
-                        </select>
+                    <div style="float:left;margin-right:20px;">
+                        <div class = "form-group mapform">
+                            <label for="num_travelers">Number of Travelers: </label>
+                            <input type="number" id="num_travelers" ng-model="num_travelers" min="1" max="10+" style="width:50px" value=2>
+                        </div>
+
+                        <div class = "form-group mapform">
+                            <label for="roomtype">Room Type:</label>
+                            <select id="roomtype" ng-model="roomtype">
+                                <option value="private-room">Private Room</option>
+                                <option value="shared-room">Shared Room</option>
+                                <option value="entire-home">Entire Home</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class = "form-group">
-                        <button type="button" class="btn btn-info" ng-click="Submit()">
-                        <span class="glyphicon glyphicon-search"></span> Search
-                        </button>
+                    <div class = "form-group mapform">
+                            <button type="button" class="btn btn-info" ng-click="Submit()">
+                            <span class="glyphicon glyphicon-search"></span> Search
+                            </button>
                     </div>
                 </div>
             </div>
