@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-//const oracledb = require('oracledb');
+const oracledb = require('oracledb');
 const router = express.Router();
 var app = express();
 
@@ -64,8 +64,8 @@ Databases:
 
 
 // Connect string to Oracle DB
-/*
 
+/*
 var connection = oracledb.getConnection(
   {
   user     : 'foodforthought',
@@ -81,7 +81,7 @@ function connExecute(err, connection) {
     return;
   }
   connection.execute(
-    'SELECT DISTINCT CATEGORIES FROM YELP_DATA',
+    'SELECT * FROM NEARBY WHERE ROWNUM = 1',
     function(err, result) {
       if (err) {
         console.error(err.message); return;
@@ -90,7 +90,9 @@ function connExecute(err, connection) {
         console.log(result.rows);  // print all returned rows
       }
     });
-} */
+} 
+*/
+
 
 router.use(require('cookie-parser')());
 
@@ -203,8 +205,16 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
       break;
   }
   
-  var query = "SELECT LATITUDE, LONGITUDE, NAME, LISTING_URL, PRICE, AIRBNB.NEIGHBOURHOOD, REVIEW_SCORES_RATING, ACCOMMODATES, PROPERTY_TYPE, ROOM_TYPE \
-               FROM AIRBNB JOIN AIRBNB_ADDRESS ON AIRBNB.ID = AIRBNB_ADDRESS.ID \
+minRestaurants = 1; // Hard-coded, for now!
+var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.LISTING_URL, \
+               A.PRICE, A.NEIGHBOURHOOD, A.REVIEW_SCORES_RATING, A.ACCOMMODATES, \
+               A.PROPERTY_TYPE, A.ROOM_TYPE";
+
+  var query = "SELECT " + attributes + ", COUNT(*) AS NUM_RESTAURANTS\
+               FROM AIRBNB A \
+               JOIN AIRBNB_ADDRESS ADR ON A.ID = ADR.ID \
+               JOIN NEARBY N ON A.ID = N.ARIBNBID \
+               JOIN YELP_DATA Y ON N.YELPID = Y.ID \
                WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) +
                " AND ROOM_TYPE = '" + rt + "' ";
   lodgingtypes = req.params.lodgingtypes.split('-');
@@ -213,7 +223,7 @@ router.get('/data/:numtravelers/:lodgingtypes/:roomtype/', function(req, res, ne
     conj = (i==0) ? "AND (" : "OR";
     query += (conj + " PROPERTY_TYPE = '" + lt + "' ")
   }
-  query += ")"
+  query += (") GROUP BY " + attributes + " HAVING COUNT(*) >= " + minRestaurants)
   console.log(query);
 
 

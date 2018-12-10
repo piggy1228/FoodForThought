@@ -30,6 +30,7 @@ app.controller('mainController', function($scope, $http) {
       var accomodates = row[7];
       var property_type = row[8];
       var room_type = row[9];
+      var num_rest = row[10];
 
       var infowincontent = document.createElement('div');
       var link = document.createElement('a');
@@ -39,17 +40,27 @@ app.controller('mainController', function($scope, $http) {
       link.appendChild(strong);
       var description = document.createElement('strong');
       var description2 = document.createElement('text');
+      var description3 = document.createElement('text');
+      description3.setAttribute('style', 'color:tomato;')
+
       description.textContent = neighborhood + ' ' + 
         property_type + ' (' + room_type + ')'
       description2.textContent = 
         'Price per night: ' + price +
         ' | Average Rating: ' + score +
         ' | Accomodates up to ' + accomodates;
+      // Use ternary to correctly display 'restaurant' or 'restaurants'
+      description3.textContent = (num_rest == 1) ?
+        'Found 1 nearby restaurant suiting you!' :
+        'Found ' + num_rest + ' nearby restaurants for you!';
+
 
       infowincontent.appendChild(link);
       infowincontent.appendChild(description)
       infowincontent.appendChild(document.createElement('br'));
       infowincontent.appendChild(description2)
+      infowincontent.appendChild(document.createElement('br'));
+      infowincontent.appendChild(description3)
 
 
       var marker = new google.maps.Marker({
@@ -85,6 +96,7 @@ app.controller('mainController', function($scope, $http) {
         $scope.roomtype + '/'
         var request = $http.get(request_string);
         request.success(function(data) {
+            console.log(data);
             $scope.data = data;
             clearMarkers();
             for (i = 0; i < data.length; i++) {
