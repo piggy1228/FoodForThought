@@ -32,11 +32,11 @@
 	        <a class="nav-link hdr-el" href="/logout">Logout</a>
 	   	  </li>
 	    </ul>
-	    <form class="form-inline my-2 my-lg-0" method="POST">
-	      <input id="email-input" name="user" class="form-control mr-sm-2" type="form-text text-muted" placeholder="Username" aria-label="Search">
-	      <input class="form-control mr-sm-2" name="pass" type="password" placeholder="Password" aria-label="Search">
+	    <form class="form-inline my-2 my-lg-0" method="POST" ng-controller="loginController">
+	      <input id="email-input" name="user" class="form-control mr-sm-2" type="form-text text-muted" placeholder="Username" ng-model="username" aria-label="Search">
+	      <input id="password-input" class="form-control mr-sm-2" name="pass" type="password" placeholder="Password" ng-model="password" aria-label="Search">
 	      <input name="login" id="login" value="login" style="display: none;">
-	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" ng-click="login()">Login</button>
 	    </form>
 
 	    

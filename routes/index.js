@@ -150,14 +150,15 @@ router.use('/create-account', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
 
+
   if (req.body.login == "login") {
     models.user.find( { username: req.body.user, password: req.body.pass }, function(error, theUser) {
       if (error) {
         //NO IMPLEMENTATION
         console.log(error);
       } else {
-
-        if (theUser !== undefined) {
+        console.log("TRYNA SEARCH FOR UR LOGIN HEHExd");
+        if (theUser !== undefined && theUser.length !== 0) {
           console.log(theUser);
           console.log(theUser[0].username);
           res.cookie('user', theUser[0].username);
