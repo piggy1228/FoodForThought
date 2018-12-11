@@ -215,12 +215,17 @@ router.post('/airbnb-detail/:id', function(req, res, next) {
   console.log(req.body);
   var username = req.cookies.user;
 
+  if (username === undefined) {
+    res.render
+  }
+
   var restaurants = [];
 
   //FOR LOOPS IS MESSING UP
 
   if (req.body.restaurant === undefined) {
-    //do nothing
+    res.render('booked', { 'user': 'guest user', 'message': "<div class='alert alert-success' id='success-alert' role='alert' style='text-align = center;'>" + 
+            "Hi guest user, you cannot save a vacation plan unless you're logged in. Create an account! :)</div>"});
   }
   else if (!Array.isArray(req.body.restaurant)) {
 
