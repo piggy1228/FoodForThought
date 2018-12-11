@@ -219,8 +219,10 @@ router.post('/airbnb-detail/:id', function(req, res, next) {
 
   //FOR LOOPS IS MESSING UP
 
-  console.log("NUM OF RESTAURANTS IS " + req.body.restaurant.length);
-  if (!Array.isArray(req.body.restaurant)) {
+  if (req.body.restaurant === undefined) {
+    //do nothing
+  }
+  else if (!Array.isArray(req.body.restaurant)) {
 
     console.log("ONLY ONE RESTAURANT SELECTED");
     var restaurantComp = req.body.restaurant.split('~~~');

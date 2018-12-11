@@ -111,3 +111,37 @@
 .backbutton {
 	text-align: center;
 }
+
+.container-trips {
+	text-align: center;
+	font-family: "Lucida Console", Monaco, monospace;
+}
+
+.container-user {
+	font-size: 20px;
+	background-color: #d5f4e6;
+}
+
+.container-email {
+	font-size: 20px;
+	background-color: #d5f4e6;
+}
+
+.trip {
+	background-color: #618685;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.housing {
+	font-size: 15px;
+	background-color: #fefbd8;
+}
+
+.restaurant-container {
+	font-size: 12px;
+}
+
+.comments {
+	font-size: 12px;
+}
