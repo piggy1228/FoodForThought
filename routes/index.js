@@ -62,36 +62,35 @@ Databases:
   { name: 'LONGITUDE' } ]
 */
 
-
 // Connect string to Oracle DB
 
-/*
-var connection = oracledb.getConnection(
-  {
-  user     : 'foodforthought',
-  password : 'foodforthought',
-  connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
-  },
-  connExecute
-);
 
-function connExecute(err, connection) {
-  if (err) {
-    console.error(err.message);
-    return;
-  }
-  connection.execute(
-    'SELECT * FROM NEARBY WHERE ROWNUM = 1',
-    function(err, result) {
-      if (err) {
-        console.error(err.message); return;
-      } else {
-        console.log(result.metaData);
-        console.log(result.rows);  // print all returned rows
-      }
-    });
-} 
-*/
+// var connection = oracledb.getConnection(
+//   {
+//   user     : 'foodforthought',
+//   password : 'foodforthought',
+//   connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+//   },
+//   connExecute
+// );
+
+// function connExecute(err, connection) {
+//   if (err) {
+//     console.error(err.message);
+//     return;
+//   }
+//   connection.execute(
+//     'SELECT * FROM NEARBY WHERE ROWNUM = 1',
+//     function(err, result) {
+//       if (err) {
+//         console.error(err.message); return;
+//       } else {
+//         console.log(result.metaData);
+//         console.log(result.rows);  // print all returned rows
+//       }
+//     });
+// } 
+
 
 
 router.use(require('cookie-parser')());
@@ -192,7 +191,7 @@ router.get('/', function(req, res, next) {
   }
 });
 
-router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/', function(req, res, next) {
+router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/:lp/:rp/:goodtypes/:badtypes/:neighbourhood', function(req, res, next) {
   switch(req.params.roomtype) {
     case 'private-room':
       var rt = 'Private room'
@@ -205,27 +204,70 @@ router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/', funct
       break;
   }
   
-minRestaurants = 1; // Hard-coded, for now!
-var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.ID, \
-               A.PRICE, A.NEIGHBOURHOOD, A.REVIEW_SCORES_RATING, A.ACCOMMODATES, \
-               A.PROPERTY_TYPE, A.ROOM_TYPE";
+  lodgingtypes = req.params.lodgingtypes.split('-');
+  ltStr = ''
+  for (var i = 0; i < lodgingtypes.length; i++) {
+    lt = (lodgingtypes[i]).charAt(0).toUpperCase() + (lodgingtypes[i]).slice(1);
+    conj = (i==0) ? "AND (" : "OR";
+    if (lt == "Other") {
+      ltStr += (conj + " (PROPERTY_TYPE != 'APARTMENT' AND \
+        PROPERTY_TYPE != 'CONDOMINIUM' AND PROPERTY_TYPE != 'LOFT' \
+        AND PROPERTY_TYPE != 'HOUSE' AND PROPERTY_TYPE != 'HOSTEL' \
+        AND PROPERTY_TYPE != 'HOTEL') ");
+    } else {
+      ltStr += (conj + " PROPERTY_TYPE = '" + lt + "' ")
+    }
+  }
+  ltStr += ") ";
 
-  var query = "SELECT " + attributes + ", COUNT(*) AS NUM_RESTAURANTS\
+  good = req.params.goodtypes.split(',');
+  bad = req.params.badtypes.split(',')
+
+  // Ranking system (+3 if has good tag; +0 if has bad tag; +1 otherwise)
+  rank = "SUM (CASE WHEN ("
+  for (var i = 0; i < good.length; i++) {
+    good[i] = good[i].trim();
+    rank += "Y.CATEGORIES LIKE '%" + good[i] + "%'"
+    if (i != good.length - 1) {
+      rank += " OR "
+    } else {
+      rank += ") "
+    }
+  }
+  rank += "THEN 3 "
+
+  rank += "WHEN ("
+  for (var i = 0; i < bad.length; i++) {
+    bad[i] = bad[i].trim();
+    rank += "Y.CATEGORIES LIKE '%" + bad[i] + "%'"
+    if (i != bad.length - 1) {
+      rank += " OR "
+    } else {
+      rank += ") "
+    }
+  }
+  rank += "THEN 0 ELSE 1 END) AS RANKING"
+  
+  neigh = "CASE WHEN A.NEIGHBOURHOOD = '" + req.params.neighbourhood +
+          "' THEN 1 ELSE 0 END AS GOODLOC"
+
+  var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.ID, \
+                A.PRICE, A.NEIGHBOURHOOD, A.REVIEW_SCORES_RATING, A.ACCOMMODATES, \
+                A.PROPERTY_TYPE, A.ROOM_TYPE";
+
+  var query = "SELECT " + attributes + ", "  + rank + ", " + neigh +
+               ", COUNT(*) AS NUM_RESTAURANTS \
                FROM AIRBNB A \
                JOIN AIRBNB_ADDRESS ADR ON A.ID = ADR.ID \
                JOIN NEARBY N ON A.ID = N.ARIBNBID \
                JOIN YELP_DATA Y ON N.YELPID = Y.ID \
                WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) +
-               " AND ROOM_TYPE = '" + rt + "' ";
-  lodgingtypes = req.params.lodgingtypes.split('-');
-  for (var i = 0; i < lodgingtypes.length; i++) {
-    lt = (lodgingtypes[i]).charAt(0).toUpperCase() + (lodgingtypes[i]).slice(1);
-    conj = (i==0) ? "AND (" : "OR";
-    query += (conj + " PROPERTY_TYPE = '" + lt + "' ")
-  }
-  query += (") GROUP BY " + attributes + " HAVING COUNT(*) >= " + req.params.numrestaurants)
+               " AND ROOM_TYPE = '" + rt + "' " + ltStr;
+  // Filter airbnbs with not enough nearby restaurants
+  query += ("GROUP BY " + attributes + " HAVING COUNT(*) >= " +
+            req.params.numrestaurants + " ORDER BY GOODLOC DESC, RANKING DESC")
+  
   console.log(query);
-
 
   var connection = oracledb.getConnection(
     {
@@ -245,7 +287,7 @@ var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.ID, \
       if (err) {
         console.error(err.message); return;
       } else {
-        console.log(result.metaData);
+        console.log(result.rows.length);
         res.json(result.rows)  // print all returned rows
       }
     });
