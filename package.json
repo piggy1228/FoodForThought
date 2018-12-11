@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/piggy1228/FoodForThought#readme",
   "dependencies": {
+    "async": "^2.6.1",
     "bootstrap": "^3.3.7",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",

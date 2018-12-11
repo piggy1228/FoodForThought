@@ -21,7 +21,7 @@
     <body data-spy="scroll" data-target=".scrollspy">
         <header></header>
         <div class="container" ng-controller="mainController" style="padding-top: 30px;">
-        <h4 class="title"> Welcome to our lodging and dining service, <font color='DodgerBlue'><b>{{user}}</b></font>!</h4>
+        <h4 class="title"> Welcome to our lodging and dining service, <font color='DodgerBlue'><b ng-model="username">{{user}}</b></font>!</h4>
         <h3 class="title" style="margin-bottom: 30px;"> Tell us a bit about your perfect vacation...</h3>
 
             <div class="jumbotron mapcontainer" style="height: 350px">

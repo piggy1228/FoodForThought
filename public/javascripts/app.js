@@ -1,25 +1,5 @@
 var app = angular.module('foodForThought',[]);
 
-
-app.controller('loginController', function($scope, $http) {
-    $scope.login() = function {
-      console.log($scope);
-      var user = document.getElementById('email-input').value;
-      var pass = document.getElementById('password-input').value;
-
-      console.log("USER IS " + user);
-      console.log("PASSWORD IS " + pass);
-      var req = {
-         method: 'POST',
-         url: '/',
-         data: { 'user': user, 'pass': pass }
-      };
-
-      $http(req);
-
-    }
-
-})
 app.controller('mainController', function($scope, $http) {
     
     // Initialize fields in neighborhood dropdown
@@ -146,4 +126,27 @@ app.controller('mainController', function($scope, $http) {
             console.log('error on request: ' + request_string);
         })
     }
+})
+
+app.controller('loginController', function($scope, $http) {
+
+
+    $scope.login = function() {
+      console.log($scope);
+      var user = document.getElementById('email-input').value;
+      var pass = document.getElementById('password-input').value;
+
+      console.log("USER IS " + user);
+      console.log("PASSWORD IS " + pass);
+
+      var config = { 'Content-Type': 'application/json' };
+      var data = { 'user': user, 'pass': pass, 'login': 'login'};
+
+      var request = $http.get('/login/' + user + '/' + pass);
+
+      request.success(function(data) {
+        $scope.data = data;
+      })
+    }
+
 })
