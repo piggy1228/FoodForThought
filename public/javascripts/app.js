@@ -138,7 +138,7 @@ app.controller('mainController', function($scope, $http) {
     }
 
     var removeSuggestions = function() {
-        // TODO!!
+      document.getElementById('suggestions-wrapper').innerHTML = '';
     }
 
     var addSuggestions = function(row) {
@@ -160,41 +160,27 @@ app.controller('mainController', function($scope, $http) {
           neighborhood = '';
       }
 
-      var entry = document.createElement('div');
-      entry.setAttribute('class', 'jumbotron');
-      entry.setAttribute('style', 'background-color:lightsteelblue; padding:5px')
-      var link = document.createElement('a');
-      var heading = document.createElement('h3');
-      var bold = document.createElement('b');
-      heading.textContent = name;
-      heading.appendChild(bold);
-      link.setAttribute('href', '/airbnb-detail/' + airbnb_id);
-      link.setAttribute('style', 'text-decoration:none; color:black')
-      entry.appendChild(link);
-      var description = document.createElement('strong');
-      var description2 = document.createElement('text');
-      var description3 = document.createElement('text');
-      description3.setAttribute('style', 'color:tomato;')
+      var entry = document.createElement('a');
+      entry.setAttribute('class', 'list-group-item');
+      entry.setAttribute('href', '/airbnb-detail/' + airbnb_id);
+      entry.setAttribute('style', 'color:black');
 
-      description.textContent = neighborhood + ' ' + 
-        property_type + ' (' + room_type + ')'
-      description2.textContent = 
+      var heading = document.createElement('h4');
+      var description = document.createElement('text');
+
+      heading.setAttribute('class' ,'list-group-item-heading')
+      description.setAttribute('class', 'list-group-item-text');
+
+      heading.textContent = name;
+      description.textContent = 
         'Price per night: ' + price +
         ' | Average Rating: ' + score +
-        ' | Accomodates up to ' + accomodates;
-      // Use ternary to correctly display 'restaurant' or 'restaurants'
-      description3.textContent = (num_rest == 1) ?
-        'Found 1 nearby restaurant suiting you!' :
-        'Found ' + num_rest + ' nearby restaurants for you!';
+        ' | Our rating for you: ' + rank;
 
-      entry.appendChild(link);
-      entry.appendChild(description)
+      entry.appendChild(heading);
       entry.appendChild(document.createElement('br'));
-      entry.appendChild(description2)
-      entry.appendChild(document.createElement('br'));
-      entry.appendChild(description3)
-
-      document.getElementById('main-container').appendChild(entry);
+      entry.appendChild(description);
+      document.getElementById('suggestions-wrapper').appendChild(entry);
     }
 
     $scope.Submit = function() {
@@ -237,11 +223,12 @@ app.controller('mainController', function($scope, $http) {
             removeSuggestions() // TODO: IMPLEMENT THIS!
 
             var heading = document.createElement('h2');
-            heading.textContent = 'Our top recommendations for you :)'
-            document.getElementById('main-container').appendChild(heading);
+            heading.setAttribute('style', 'font-weight:bold');
+            heading.textContent = 'Our top recommendations for you:'
+            document.getElementById('suggestions-wrapper').appendChild(heading);
             for (i = 0; i < data.length; i++) {
                 createMarker(data[i]);
-                if (i < 10) {
+                if (i < 5) {
                     addSuggestions(data[i]);
                 }
             }
