@@ -1,28 +1,31 @@
 <div class="container-trips">
-<div class="container-user">
-Username: {{user.username}}
-</div>
-<div class="container-email" style="border-bottom:2px; border-color: black; margin-bottom:10px;">
-Email: {{user.email}}
-</div>
+	<div class="container-user">
+	Username: {{user.username}}
+	</div>
+	<div class="container-email" style="border-bottom:2px; border-color: black; margin-bottom:10px;">
+	Email: {{user.email}}
+	</div>
 
-{{#each user.savedtrips}}
-<div class="trip">
-	<div class="housing">
-	{{airbnb}}
+	<h3>Your planned trips:</h3>
+	<div class="container" style="width:60%">
+		{{#each user.savedtrips}}
+		<div class="trip">
+			<div class="housing">
+			{{airbnb}}
+			</div>
+			{{#each restaurants}}
+			<div class="restaurant-container">
+				{{name}}
+				{{rating}}
+				{{price}}
+				{{pnumber}}
+			</div>
+			{{/each}}
+			<div class="comments">
+			Additional Commments:
+			{{comments}}
+			</div>
+		</div>
+		{{/each}}
 	</div>
-	{{#each restaurants}}
-	<div class="restaurant-container">
-		{{name}}
-		{{rating}}
-		{{price}}
-		{{pnumber}}
-	</div>
-	{{/each}}
-	<div class="comments">
-	Additional Commments:
-	{{comments}}
-	</div>
-</div>
-{{/each}}
 </div>

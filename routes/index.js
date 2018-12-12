@@ -432,7 +432,11 @@ router.get('/airbnb-detail/:id', function(req, res, next) {
             word = word.replace('_', ' ');
             categories.push({cat: word})
           }
-          phone = data[i][20].toString()
+          if (phone == null) {
+            phone = 'No phone number given'
+          } else {
+            phone = data[i][20].toString()
+          }
           phoneStr = '+1(' + phone.substring(1,4) +
             ')-' + phone.substring(4,7) + '-' +
             phone.substring(7,11);
