@@ -6,27 +6,42 @@
 </style>
 
 <div>{{message}}</div>
-<a href = {{aURL}} style="text-decoration:none; color:black;">
-<div class="jumbotron" style="background-color:#CCFFCC; padding:20px">
-    <h1><b><center>{{aName}}</center></b></h1>
-    <h3><center>{{aNeighbourhood}} {{aPropertyType}} ({{aRoomType}})</center></h3>
-</div>
-</a>
-
-{{#each yelpData}}
-    <div class="container" style="width:600px">
-        <a href = {{yURL}} style="text-decoration:none; color:black;">
-        <div class="jumbotron" style="background-color:lightyellow; padding:5px">
-            <h2><b><center>{{yName}}</center></b></h2>
-            <p style="color:crimson"><b>
-            {{yPrice}}
-            {{#each yCategories}}
-                | {{cat}}
-            {{/each}}
-            </b></p>
-            <h5></b>{{yRating}} Stars</b></h5>
-            <p>{{yPhone}}</p>
-        </div>
+<form method="POST" class="vacaform">
+    <a href = {{aURL}} target="_blank" style="text-decoration:none; color:black;">
+    <div class="jumbotron" style="background-color:#CCFFCC; padding:20px">
+        <h1><b><center>{{aName}}</center></b></h1>
+        <h3><center>{{aNeighbourhood}} {{aPropertyType}} ({{aRoomType}})</center></h3>
     </div>
     </a>
-{{/each}}
+    <div class="checkbox-container"> If you are interested in taking a vacation to this airbnb, make sure to save the trip info down below. Check off any restaurants you would be interested in visiting to save them as well. Enter any additional comments you may have of places you would like to visit!
+    </div>
+    {{#each yelpData}}
+        <div class="container" style="width:100%; float:left; margin-top:10px">
+            <div class="container" style="width:600px; float:left;">
+                <a href = {{yURL}} target="_blank" style="text-decoration:none; color:black;">
+                <div class="jumbotron" style="background-color:lightyellow; padding:5px">
+                    <h2><b><center>{{yName}}</center></b></h2>
+                    <p style="color:crimson"><b>
+                    {{yPrice}}
+                    {{#each yCategories}}
+                        | {{cat}}
+                    {{/each}}
+                    </b></p>
+                    <h5></b>{{yRating}} Stars</b></h5>
+                    <p>{{yPhone}}</p>
+                </div>
+            </div>
+            </a>
+            <div class="container rest-checkbox" style="width:200px; float:left;">
+                    <div>If you would like to eat here, make sure to check the box to remember!</div>
+                    <input type="checkbox" class="form-check-input" id="{{yName}}" name="restaurant" value="{{yName}}~~~{{yRating}}~~~{{yPrice}}~~~{{yPhone}}">
+            </div>
+        </div>
+    {{/each}}
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea class="form-control" rows="5" id="comment" name="additionalcomment"></textarea>
+    </div>
+    <input name="airbnb" type="hidden" value="{{aName}}">
+    <button type="submit" class="btn btn-secondary btn-lg btn-block" style="margin-bottom:20px;">Save Travel Plan</button>
+</form>

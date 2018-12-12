@@ -239,3 +239,26 @@ app.controller('mainController', function($scope, $http) {
         })
     }
 })
+
+app.controller('loginController', function($scope, $http) {
+
+
+    $scope.login = function() {
+      console.log($scope);
+      var user = document.getElementById('email-input').value;
+      var pass = document.getElementById('password-input').value;
+
+      console.log("USER IS " + user);
+      console.log("PASSWORD IS " + pass);
+
+      var config = { 'Content-Type': 'application/json' };
+      var data = { 'user': user, 'pass': pass, 'login': 'login'};
+
+      var request = $http.get('/login/' + user + '/' + pass);
+
+      request.success(function(data) {
+        $scope.data = data;
+      })
+    }
+
+})

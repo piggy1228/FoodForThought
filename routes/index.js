@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const oracledb = require('oracledb');
 const router = express.Router();
+var async = require("async");
+
 var app = express();
 
 var mongoose = require('mongoose');
@@ -147,37 +149,53 @@ router.use('/create-account', function (req, res, next) {
   }
 });
 
-router.post('/', function (req, res, next) {
 
-  if (req.body.login == "login") {
-    models.user.find( { username: req.body.user, password: req.body.pass }, function(error, theUser) {
-      if (error) {
-        //NO IMPLEMENTATION
-        console.log(error);
+/* GET home page. */
+
+
+router.get('/login/:user/:pass', function(req, res, next) {
+  var user = req.params.user;
+  var pass = req.params.pass;
+
+  models.user.find( { username: user, password: pass }, function(error, theUser) {
+    if (error) {
+      //NO IMPLEMENTATION
+      console.log(error);
+    } else {
+      //console.log("TRYNA SEARCH FOR UR LOGIN HEHExd");
+      console.log(req.body);
+      if (theUser !== undefined && theUser.length !== 0) {
+        console.log(theUser);
+        console.log(theUser[0].username);
+        res.cookie('user', theUser[0].username);
+        res.cookie('email', theUser[0].email);
+        console.log("TRYING TO RENDER INDEX");
+
+        console.log(res);
+        res.render('index', { 'user': theUser[0].username});
+        
       } else {
+        
+        if (req.cookies.user === undefined) {
 
-        if (theUser !== undefined) {
-          console.log(theUser);
-          console.log(theUser[0].username);
-          res.cookie('user', theUser[0].username);
-          res.cookie('email', theUser[0].email);
-          res.render('index', { 'user': theUser[0].username});
-        } else {
-  
           res.render('index', { 'user': 'guest user'});
+          
+        } else {
+
+          res.render('index', { 'user': req.cookies.user, 'message': "<div class='alert alert-danger' role='alert'>" + 
+          "You are already logged into an account!</div>"});
+          
         }
         
       }
-    });   
-  } else {
-    console.log("CREATE");
-    res.render("create-account");
-  }
-});
+      
+    }
+  });  
+})
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
   console.log(req.cookies);
+  console.log(res);
   var usercookie = req.cookies.user;
 
   if (!usercookie) {
@@ -189,6 +207,90 @@ router.get('/', function(req, res, next) {
       'user': usercookie
     });
   }
+});
+
+router.post('/airbnb-detail/:id', function(req, res, next) {
+  console.log("WE FOUND THE POST REQUEST MAILMAN");
+  console.log(req.body);
+  var username = req.cookies.user;
+
+  if (username === undefined) {
+    res.render
+  }
+
+  var restaurants = [];
+
+  //FOR LOOPS IS MESSING UP
+
+  if (req.body.restaurant === undefined) {
+    res.render('booked', { 'user': 'guest user', 'message': "<div class='alert alert-success' id='success-alert' role='alert' style='text-align = center;'>" + 
+            "Hi guest user, you cannot save a vacation plan unless you're logged in. Create an account! :)</div>"});
+  }
+  else if (!Array.isArray(req.body.restaurant)) {
+
+    console.log("ONLY ONE RESTAURANT SELECTED");
+    var restaurantComp = req.body.restaurant.split('~~~');
+    var newRest = new models.restaurant({
+      name: restaurantComp[0],
+      rating: restaurantComp[1],
+      price: restaurantComp[2],
+      pnumber: restaurantComp[3]
+    }); 
+
+
+    restaurants.push(newRest);
+
+  } else {
+
+    async.each(req.body.restaurant, function (rest, callback) {
+
+      var restaurantComps = rest.split('~~~');
+      var newRest = new models.restaurant({
+        name: restaurantComps[0],
+        rating: restaurantComps[1],
+        price: restaurantComps[2],
+        pnumber: restaurantComps[3]
+      }); 
+
+      restaurants.push(newRest);
+    }, function(err) {
+      if (err) {
+        console.log("ERROR HAPPEN OHNO");
+      } else {
+      
+      }
+    });
+  }
+
+
+  var newTrip = new models.trip({
+    airbnb: req.body.airbnb,
+    restaurants: restaurants,
+    comments: req.body.additionalcomment
+  });
+
+  models.user.find( { username: req.cookies.user, email: req.cookies.email }, function(error, theUser) {
+  if (error) {
+    //NO IMPLEMENTATIOasfN
+    console.log(error);
+  } else {
+
+    if (theUser[0] !== undefined) {
+      console.log(theUser);
+      console.log(theUser[0].username);
+      
+      theUser[0].savedtrips.push(newTrip);
+      theUser[0].save(function (err) {
+
+      });
+      res.render('booked', { 'user': req.cookies.user, 'message': "<div class='alert alert-success' id='success-alert' role='alert' style='text-align = center;'>" + 
+            "Hi " + req.cookies.user + ", your vacation plan has been successfully saved! Time to book another? :)</div>"});
+    } else {
+
+      
+    }
+  }
+  });
 });
 
 router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/:lp/:rp/:goodtypes/:badtypes/:neighbourhood', function(req, res, next) {
@@ -401,6 +503,7 @@ router.get('/account', function (req, res, next) {
   
   
 });
+
 router.post('/account', function (req, res, next) {
 
   if (req.body.login == "login") {
@@ -465,6 +568,7 @@ router.post('/create-account', function (req, res, next) {
     });
 
   } else {
+
     console.log(req.body.username);
     console.log(req.body.email);
     console.log(req.body.pass);
@@ -482,7 +586,8 @@ router.post('/create-account', function (req, res, next) {
       var newUser = new models.user({
         username: username,
         email: email,
-        password: password
+        password: password,
+        savedtrips: []
       });
       
       newUser.save(function(error) {
