@@ -25,8 +25,8 @@ app.controller('mainController', function($scope, $http) {
         other:false
     }
     $scope.roomtype = 'entire-home'
-    $lp = 250;
-    $rp = 3;
+    $scope.lp = 250;
+    $scope.rp = 3;
 
     // Set up map
     var mapOptions = {

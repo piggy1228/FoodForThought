@@ -66,33 +66,33 @@ Databases:
 
 // Connect string to Oracle DB
 
+/*
+var connection = oracledb.getConnection(
+  {
+  user     : 'foodforthought',
+  password : 'foodforthought',
+  connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
+  },
+  connExecute
+);
 
-// var connection = oracledb.getConnection(
-//   {
-//   user     : 'foodforthought',
-//   password : 'foodforthought',
-//   connectString : '//fftdb.cffkxucetyjv.us-east-2.rds.amazonaws.com:1521/FFT'
-//   },
-//   connExecute
-// );
-
-// function connExecute(err, connection) {
-//   if (err) {
-//     console.error(err.message);
-//     return;
-//   }
-//   connection.execute(
-//     'SELECT * FROM NEARBY WHERE ROWNUM = 1',
-//     function(err, result) {
-//       if (err) {
-//         console.error(err.message); return;
-//       } else {
-//         console.log(result.metaData);
-//         console.log(result.rows);  // print all returned rows
-//       }
-//     });
-// } 
-
+function connExecute(err, connection) {
+  if (err) {
+    console.error(err.message);
+    return;
+  }
+  connection.execute(
+    "SELECT  table_name, column_name, data_type, data_length FROM all_tab_columns where table_name = 'AIRBNB'",
+    function(err, result) {
+      if (err) {
+        console.error(err.message); return;
+      } else {
+        console.log(result.metaData);
+        console.log(result.rows);  // print all returned rows
+      }
+    });
+} 
+*/
 
 
 router.use(require('cookie-parser')());
@@ -271,7 +271,7 @@ router.post('/airbnb-detail/:id', function(req, res, next) {
 
   models.user.find( { username: req.cookies.user, email: req.cookies.email }, function(error, theUser) {
   if (error) {
-    //NO IMPLEMENTATIOasfN
+    //NO IMPLEMENTATION
     console.log(error);
   } else {
 
@@ -307,7 +307,7 @@ router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/:lp/:rp/
   }
   
   lodgingtypes = req.params.lodgingtypes.split('-');
-  ltStr = ''
+  ltStr = ' '
   for (var i = 0; i < lodgingtypes.length; i++) {
     lt = (lodgingtypes[i]).charAt(0).toUpperCase() + (lodgingtypes[i]).slice(1);
     conj = (i==0) ? "AND (" : "OR";
@@ -353,6 +353,9 @@ router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/:lp/:rp/
   neigh = "CASE WHEN A.NEIGHBOURHOOD = '" + req.params.neighbourhood +
           "' THEN 1 ELSE 0 END AS GOODLOC"
 
+  console.log(req.params.lp);
+  console.log(req.params.rp);
+
   var attributes = "ADR.LATITUDE, ADR.LONGITUDE, A.NAME, A.ID, \
                 A.PRICE, A.NEIGHBOURHOOD, A.REVIEW_SCORES_RATING, A.ACCOMMODATES, \
                 A.PROPERTY_TYPE, A.ROOM_TYPE";
@@ -363,7 +366,9 @@ router.get('/data/:numtravelers/:numrestaurants/:lodgingtypes/:roomtype/:lp/:rp/
                JOIN AIRBNB_ADDRESS ADR ON A.ID = ADR.ID \
                JOIN NEARBY N ON A.ID = N.ARIBNBID \
                JOIN YELP_DATA Y ON N.YELPID = Y.ID \
-               WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) +
+               WHERE ACCOMMODATES >= " + parseInt(req.params.numtravelers) + 
+               " AND Y.PRICE <= " + parseInt(req.params.rp) + 
+               " AND A.PRICE <= " + parseInt(req.params.lp) +
                " AND ROOM_TYPE = '" + rt + "' " + ltStr;
   // Filter airbnbs with not enough nearby restaurants
   query += ("GROUP BY " + attributes + " HAVING COUNT(*) >= " +
@@ -432,7 +437,7 @@ router.get('/airbnb-detail/:id', function(req, res, next) {
             word = word.replace('_', ' ');
             categories.push({cat: word})
           }
-          if (phone == null) {
+          if (data[i][20] == null) {
             phone = 'No phone number given'
           } else {
             phone = data[i][20].toString()
