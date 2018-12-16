@@ -1,12 +1,9 @@
-CREATE INDEX airbnbid
-ON airbnb(id);
-CREATE INDEX airbnbaddrid
-ON airbnb_address(id);
-CREATE INDEX nearairID
-ON nearby(airbnbID;
-CREATE INDEX nearyelpID
-ON nearby(yelpID);
-CREATE INDEX yelpaddrID
-ON yelp_address(id);
-CREATE INDEX airneighbour
-on AIRBNB (NEIGHBOURHOOD)
+CREATE INDEX airbnblat
+ON airbnb_address(latitude);
+CREATE INDEX airbnblon
+ON airbnb_address(longitude);
+
+CREATE INDEX yelplat
+ON yelp_data(latitude);
+CREATE INDEX yelplon
+ON yelp_data(longitude);
